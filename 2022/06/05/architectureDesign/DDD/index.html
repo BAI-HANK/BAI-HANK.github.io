@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/blog.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-big-counter.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"bh.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":8,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="战略设计DDD 主要倡导的是  事件风暴通过事件风暴消除信息不对称，让业务相关人员都参与设计，确定每个业务领域的职责边界 流程反转将常规 MVC 三层架构中自底 （数据模型） 向上的设计方式做一个反转，以业务为主导，自顶 （业务模型） 向下地进行业务领域划分 业务拆分将大的业务需求进行拆分，建立业务领域模型，分而治之   把业务逻辑转移到领域模型，而不是服务层 为了与外部系统解耦,通过在内部定义适">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="DDD">
+<meta property="og:url" content="http://bh.com/2022/06/05/architectureDesign/DDD/index.html">
+<meta property="og:site_name" content="Hank Blog">
+<meta property="og:description" content="战略设计DDD 主要倡导的是  事件风暴通过事件风暴消除信息不对称，让业务相关人员都参与设计，确定每个业务领域的职责边界 流程反转将常规 MVC 三层架构中自底 （数据模型） 向上的设计方式做一个反转，以业务为主导，自顶 （业务模型） 向下地进行业务领域划分 业务拆分将大的业务需求进行拆分，建立业务领域模型，分而治之   把业务逻辑转移到领域模型，而不是服务层 为了与外部系统解耦,通过在内部定义适">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://bh.com/2022/06/05/architectureDesign/DDD/%E9%A2%86%E5%9F%9F.png">
+<meta property="og:image" content="http://bh.com/2022/06/05/architectureDesign/DDD/%E4%BA%8B%E4%BB%B6%E9%A3%8E%E6%9A%B4.png">
+<meta property="og:image" content="http://bh.com/2022/06/05/architectureDesign/DDD/%E4%BC%A0%E7%BB%9F%E5%9B%9B%E5%B1%82.png">
+<meta property="og:image" content="http://bh.com/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%9B%9B%E5%B1%82.png">
+<meta property="og:image" content="http://bh.com/2022/06/05/architectureDesign/DDD/%E5%85%AD%E8%BE%B9%E5%BD%A2%E6%9E%B6%E6%9E%84.png">
+<meta property="article:published_time" content="2022-06-05T02:03:00.000Z">
+<meta property="article:modified_time" content="2022-12-16T03:55:43.074Z">
+<meta property="article:author" content="Hank Bai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://bh.com/2022/06/05/architectureDesign/DDD/%E9%A2%86%E5%9F%9F.png">
+
+
+<link rel="canonical" href="http://bh.com/2022/06/05/architectureDesign/DDD/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://bh.com/2022/06/05/architectureDesign/DDD/","path":"2022/06/05/architectureDesign/DDD/","title":"DDD"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>DDD | Hank Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">热爱生活,拥抱开源,乐于分享</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">20</span></a></li><li class="menu-item menu-item-others"><a href="/others/" rel="section"><i class="fa fa-users fa-fw"></i>推荐</a></li><li class="menu-item menu-item-read"><a href="/read/" rel="section"><i class="fa fa-book fa-fw"></i>阅读</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%98%E7%95%A5%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">战略设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E5%92%8C%E5%AD%90%E5%9F%9F"><span class="nav-number">1.1.</span> <span class="nav-text">领域和子域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%90%E7%95%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8E%E9%80%9A%E7%94%A8%E8%AF%AD%E8%A8%80"><span class="nav-number">1.2.</span> <span class="nav-text">限界上下文与通用语言</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%98%E6%9C%AF%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">战术设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%9A%E5%90%88%E3%80%81%E8%81%9A%E5%90%88%E6%A0%B9%E3%80%81%E5%AE%9E%E4%BD%93%E4%B8%8E%E5%80%BC%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.1.</span> <span class="nav-text">聚合、聚合根、实体与值对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%E4%B8%8E%E9%A2%86%E5%9F%9F%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.2.</span> <span class="nav-text">应用服务与领域服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.2.1.</span> <span class="nav-text">应用服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.2.2.</span> <span class="nav-text">领域服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%93%E5%82%A8"><span class="nav-number">2.3.</span> <span class="nav-text">仓储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.4.</span> <span class="nav-text">事件模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E9%A3%8E%E6%9A%B4%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">事件风暴的重要性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E5%88%86%E5%B1%82"><span class="nav-number">4.</span> <span class="nav-text">架构分层</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Bai"
+      src="/images/rocket.png">
+  <p class="site-author-name" itemprop="name">Hank Bai</p>
+  <div class="site-description" itemprop="description">全栈工程师</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="/1410199713@qq.com" title="E-Mail → 1410199713@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BAI-HANK" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BAI-HANK" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.alloyteam.com/nav/" title="http:&#x2F;&#x2F;www.alloyteam.com&#x2F;nav&#x2F;" rel="noopener" target="_blank">Web前端导航</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+
+      <div id="music163player" >
+         <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5236281&auto=0&height=32">
+         </iframe>
+      </div><div>
+  <br>
+  <canvas id="canvasDiyBlock" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas><script src="/js/custom/clock.js"></script>
+</div>
+      
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/BAI-HANK" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://bh.com/2022/06/05/architectureDesign/DDD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/rocket.png">
+      <meta itemprop="name" content="Hank Bai">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank Blog">
+      <meta itemprop="description" content="全栈工程师">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="DDD | Hank Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DDD
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-05 10:03:00" itemprop="dateCreated datePublished" datetime="2022-06-05T10:03:00+08:00">2022-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-16 11:55:43" itemprop="dateModified" datetime="2022-12-16T11:55:43+08:00">2022-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">架构</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="战略设计"><a href="#战略设计" class="headerlink" title="战略设计"></a>战略设计</h1><p>DDD 主要倡导的是</p>
+<ol>
+<li>事件风暴<br><strong>通过事件风暴消除信息不对称，让业务相关人员都参与设计，确定每个业务领域的职责边界</strong></li>
+<li>流程反转<br><strong>将常规 MVC 三层架构中自底 （数据模型） 向上的设计方式做一个反转，以业务为主导，自顶 （业务模型） 向下地进行业务领域划分</strong></li>
+<li>业务拆分<br><strong>将大的业务需求进行拆分，建立业务领域模型，分而治之</strong>  </li>
+<li>把业务逻辑转移到领域模型，而不是服务层</li>
+<li>为了与外部系统解耦,通过在内部定义适配器去与外部交互，防止外部代码腐烂内部代码</li>
+</ol>
+<h2 id="领域和子域"><a href="#领域和子域" class="headerlink" title="领域和子域"></a>领域和子域</h2><p><strong>领域和子域是相对的概念,在一个领域内进行二次划分就是子域</strong>，如果把电商平台看成一个大的电商领域，那么订单、物流这些就是它的子域。但如果把订单看成一个领域，那么商品、订单明细等就是它的子域。</p>
+<p>把电商系统看成一个大领域，根据功能职责划分为订单子域、物流子域等。分布式系统中，往往我们把这种细粒度划分出来的子域看成微服务。把微服务看成一个大的领域范畴，微服务内部的小模块就是我们的子子域。按照这种方式我们可以建立起一个领域树。</p>
+<p><img src="/2022/06/05/architectureDesign/DDD/%E9%A2%86%E5%9F%9F.png" alt="领域"></p>
+<p><strong>对于同一父级领域而言，根据子域在父级领域下的业务价值又可以将子域划分为核心域、支撑域和通用域</strong></p>
+<ol>
+<li>核心域</li>
+</ol>
+<p>核心域是业务系统的核心，它是业务系统核心价值的体现。核心域的划分标准是根据系统的定位而决定的。比如，把桃子树看成一个系统，如果它存在果园中，那么桃子是它的核心域；如果它存在于花园中，那么桃花是它的核心域。</p>
+<ol start="2">
+<li>支撑域</li>
+</ol>
+<p>这种子域它本身没有核心域对于业务价值那么突出，但是业务系统根据核心域开展业务时又需要依赖它。比如，安全气囊对于车辆而言，它不会成为车辆这个系统的核心卖点，但是它如果没有，一定会影响到车辆的价值。并且不同的车型，安全气囊的规格（比如大小）也是不一样的，这就是支撑域的业务定制性，强业务相关，但又非核心。</p>
+<ol start="3">
+<li>通用域</li>
+</ol>
+<p>通用域的核心诉求是稳定与高兼容性，它能够被移动至其他的领域下。比如，在订单领域中，用户与权限就是它的通用域。同样的，这个子域能够在几乎不修改核心逻辑的情况下被应用至物流领域中。</p>
+<h2 id="限界上下文与通用语言"><a href="#限界上下文与通用语言" class="headerlink" title="限界上下文与通用语言"></a>限界上下文与通用语言</h2><p>在前面桃树的例子中，在果园跟花园中桃树所对应的核心域是不一样的。</p>
+<p>造成这种子域划分差异的原因是什么？</p>
+<p>我们从具体的语义环境出发去思考了核心域的划分是导致差异的主要原因。而这种具体语义环境就是上下文。桃子是核心域时，它的上下文是果园；桃花是核心域时，它的上下文是花园。花园跟果园在各自的上下文中开展业务，不会互相入侵上下文。花园的农夫不会去果园养花，果园的农夫不会去花园养果子，这就是不同上下文之间的边界。</p>
+<p>限界上下文意味着特定的、具有明确边界的语义环境，定义了领域的业务边界。</p>
+<p>在同一个限界上下文中，我们对于领域内所有内容的认知应该都是一致的。相信大家在需求开发过程中遇到过跟产品、业务人员、测试“扯皮”的头疼时刻，为了解决这个问题，我们需要有一套通用语言来消除项目相关的人员对领域内的业务逻辑、流程处理规则、专业术语的信息差。</p>
+<p>通用语言表示着对领域内的一切动词、名词、形容词达到了一致的认知。比如，我们在果园的限界上下文里认为桃树是用来生产桃子的，而不是用来开桃花的</p>
+<h1 id="战术设计"><a href="#战术设计" class="headerlink" title="战术设计"></a>战术设计</h1><blockquote>
+<p>DDD 的战略设计包含了什么：领域、子域、限界上下文、通用语言、上下文映射图和架构风格。战术设计为了匹配战略设计主要包括以&gt;下概念：聚合、聚合根、实体、值对象、应用服务、领域服务、仓储、事件模型等。</p>
+</blockquote>
+<h2 id="聚合、聚合根、实体与值对象"><a href="#聚合、聚合根、实体与值对象" class="headerlink" title="聚合、聚合根、实体与值对象"></a>聚合、聚合根、实体与值对象</h2><p>领域/子域是 DDD 战略设计中最核心的业务体现。那么对应到代码层面，领域/子域的概念的呈现方式是什么呢？答案是：聚合。为了描述聚合内部的属性，DDD 定义了实体与值对象的概念。最后，领域的逻辑呈现要在一个限界上下文中才有意义，必然要有一个概念来包括下领域的逻辑与定义业务的边界，这个就是聚合根。</p>
+<ol>
+<li>实体<br>实体是描述某一可连续变化的物体。它是具有生命周期的，并且可以通过唯一标识来确定是否为同一个实体。<br><strong>实体 = 唯一标识 + 生命周期(可以理解为属性可变)</strong></li>
+<li>值对象<br>它与实体定位正好相反，如果一个物体一旦被生成之后就具备不可变性，并且只要它们的属性值一致就可以认为它们是同一个物体。值对象的修改是直接替换，局部更新是不被允许的,更像一组数据。值对象不变性和可移植性可以方便进行传递<br><strong>值对象 = 不变性 + 通过属性判断相等(没有唯一标识)</strong></li>
+<li>聚合<br>它是领域的抽象体现，包含了当前领域内的一切事务。它在代码层面主要呈现的方式是模块的划分<br><strong>(模型,事件,约束，仓库接口)这些东西的组合就是聚合</strong></li>
+<li>聚合根<br>如果说聚合是领域的抽象体现，那么聚合根就是领域的具象体现，它是一种特殊的实体。聚合根内部定义了当前领域需要的业务属性（实体与值对象），且包含了该领域内所有的业务逻辑定义,聚合是一种分包思路，可以看作一个领域；而聚合根就是这个领域中的具体逻辑；多个实体实现聚合根的功能点；<br><strong>聚合根 = 领域强关联的实体、值对象 + 核心业务逻辑</strong></li>
+<li> 实体、值对象与聚合根的关系 </li>
+<li><ul>
+<li>第一个，包含关系。如下图所示，聚合根内部能够包含 N 个实体与 N 个值对象，它们作为聚合根的属性。</li>
+<li>第二个，生命周期关系。这个从包含角度其实就很明显，聚合根里面包含了实体与值对象。也就是说实体的生命周期是捆绑着聚合根的，由聚合根来维<br>护。而值对象不存在生命周期，只能被整体替换。</li>
+<li>第三个，标识关系。聚合根本身就是实体，它的 ID 就是它的唯一标识，这个没什么好说的。但是实体的唯一标识是仅针对当前聚合根而言的，就像商<br>品实体能够被订单聚合关联，也能被物流聚合关联。值对象在聚合内部的唯一性通过属性相等判断实现。  </li>
+</ul>
+</li>
+</ol>
+<p>划分的立场</p>
+<p>这里我们以新建用户，新建过程中需要给赋予角色这个需求为例</p>
+<ol>
+<li>角色非独立维护<br>整个系统中的角色不是独立开展的业务，比如我们定义了一个角色的枚举类，系统的用户只能关联这个枚举类对应的角色。这个时候，角色在用户聚合根内就是值对象，因为此时角色满足了不变性与属性判断相等这两个条件。  </li>
+<li>角色独立维护<br>如果角色本身可以独立开展业务，比如系统内管理员可以新增自定义角色，新增用户的时候可以关联到这个角色。超级管理员可以修改角色的名称，此时查看用户关联角色信息时应该是修改后的角色名。<br>很明显，这种情况下，角色本身在用户聚合根内是一个可以变的状态，并且如果用户需要感知到角色的可变，只能通过角色的不可变的唯一标识去感知。这种情况下，角色在用户内就是实体</li>
+</ol>
+<h2 id="应用服务与领域服务"><a href="#应用服务与领域服务" class="headerlink" title="应用服务与领域服务"></a>应用服务与领域服务</h2><p><strong>根据划分后的领域，我们能够确定领域的具象体现——聚合根。此时，原子化的业务逻辑都被定义在了聚合根内部，这也是 DDD 所推崇的解耦与内聚思想。一个聚合根只代表了一个领域的业务，而我们系统的功能体现往往是多个领域聚合协作的，对应了战略设计里面的上下文协作。为了完成这种协作逻辑，战术设计中定义了应用服务层与领域服务层。</strong></p>
+<h3 id="应用服务"><a href="#应用服务" class="headerlink" title="应用服务"></a>应用服务</h3><p>应用服务可以看作是一个流程编排引擎，它本身不承担任何业务逻辑处理。应用服务可以理解为功能用例层，比如新建用户，这个功能就应该定义在应用服&gt;务层。但是新建用户是一个比较繁琐的流程，比如涉及到关联角色等业务逻辑处理。这些业务逻辑处理应该被定义在用户聚合根内部，而应用服务只负责调用定义在聚合根内部的方法就好了，屏蔽的业务逻辑的具体实现。<br>应用服务表象定位与 MVC 中的 Service 比较像，但是 Service 内部充满了功能点的逻辑处理，而应用服务相对来说是比较薄的一层，它只做逻辑编排。参数校验、聚合根方法调用、外部服务调用、持久化聚合根等与业务流程走向相关，业务逻辑无关的代码均可定义在此处。<br>应用服务是整个系统的门面，也是六边形架构中的出入口，外部服务通过访问应用服务提供的接口来执行功能用例。</p>
+<h3 id="领域服务"><a href="#领域服务" class="headerlink" title="领域服务"></a>领域服务</h3><p>虽然应用服务与聚合根逻辑几乎已经覆盖了功能点的实现，但是有时还是会出现这样的业务场景：<br>A 聚合根需要做一个原子化的逻辑处理，但是这个逻辑处理需要 B 聚合根的逻辑协作才能完成。这种场景的实现方式有两种。</p>
+<ol>
+<li><p>第一种就是在应用服务内先调用 A 聚合处理一下，再调用 B 聚合处理一下，最后再调用 A 聚合收尾逻辑。这种方式符合 DDD 思想，但是对应到应用服务，我明明是一个很原子化的 A 聚合的逻辑处理，居然有三行代码。而这段逻辑会被好几个功能点调用，每次为了完成这个逻辑我就要写三行代码，显然逻辑的原子化不够突出，还容易出 Bug。</p>
+</li>
+<li><p>第二种就是应用服务与聚合根都各退一步，在它们中间抽象一层领域服务。把 A、B 聚合协作逻辑定义到 A 的领域服务内，应用服务调用 A 领域服务即可，这样在应用服务上看这段逻辑就很清晰了,也方便进行复用</p>
+</li>
+</ol>
+<p>*<em>领域服务其实是对业务的一种妥协，理想情况下是没有领域服务的。一旦出现了领域服务，一定要确定好这是否在执行一个特别显著的、专属于某个领域的原子化业务逻辑。滥用领域服务很有可能会演化为逻辑又定义在 Service 状况</em></p>
+<h2 id="仓储"><a href="#仓储" class="headerlink" title="仓储"></a>仓储</h2><p><strong>为了桥接数据模型与领域模型，DDD 在战术设计中提出了仓储的概念</strong><br>仓储的定位就是持久化聚合与检索聚合。让应用服务专注逻辑编排，聚合根专注逻辑处理，不用关心领域模型的持久化方式与存储介质。</p>
+<h2 id="事件模型"><a href="#事件模型" class="headerlink" title="事件模型"></a>事件模型</h2><p>虽然按照上述的方式我们已经可以在战术上切合战略设计，但是貌似应用服务为了完成一个功能要做一些都不是这个功能点的事情。</p>
+<p>比如下订单后，给用户增长积分与赠送优惠券的需求。如果在应用服务内实现，用户逻辑处理完，数据入库成功后，再依次调用用户增长积分的外部服务接口与赠送优惠券的外部服务接口。<br>到这里是不是很奇怪？我一个订单领域，已经把下订单这个事情做完了，但是却还要调用其他的三方服务的接口通知它们订单生成这个事情。如果后续通知的接口越来越多，对于应用服务简直就是灾难。<br>为了解决这个耦合严重的鸡肋点，DDD 的战术设计中提出了事件模型。下单完成后，发布一个下单完成的领域事件，让需要感知这个事件的服务自行监听并处理，忽略不相关的领域活动。</p>
+<p>领域事件的发送成功应该与功能点的事务是一致的，但是领域事件的处理结果不应该与功能点事务一致。<br>我下订单成功了，发送了创建订单事件，但是积分增长失败了，这时如果让订单生成失败，这显然是不合理的。</p>
+<h1 id="事件风暴的重要性"><a href="#事件风暴的重要性" class="headerlink" title="事件风暴的重要性"></a>事件风暴的重要性</h1><p><strong>从落地 DDD 的过程来看，有两个问题是最困难且最重要的：一个是界定出一个系统中有多少个聚合，即划分多少个业务模型；另一个是界定出每个聚合之间的限界上下文，即划分清楚领域的业务边界</strong></p>
+<p>事件风暴是一套 Workshop（类似于头脑风暴）的方法。它以事件为出发点，通过多人协作来划分业务领域与业务边界。<br>事件风暴的分析过程就像在讲述一个个的用户故事。通过一个个的用户故事来统一开发人员、业务人员、UX、测试等项目参与者对业务流程的认知，这包括关键的流程、核心的业务规则、系统不同模块的使用。其次是帮助开发人员梳理清楚领域模型与业务边界。</p>
+<p><strong>那么用户故事又是怎么分析出来的呢？可以用流程图,时序图等进行表达</strong><br>也就是说，事件风暴的核心流程就是：用户执行了命令，从而产生了事件。<br><img src="/2022/06/05/architectureDesign/DDD/%E4%BA%8B%E4%BB%B6%E9%A3%8E%E6%9A%B4.png" alt="事件风暴"></p>
+<p>因此，在分析一个业务系统前，首先要做的就是搞清楚我们想要的业务结果（事件）是什么，从事件出发开始反推产生事件的动作、外部因素与业务规则。再根据动作进行反推分析本系统内的动作汇聚发起点的业务汇聚在何处。<br>汇聚点即为某一个业务领域的聚合，一个个事件与动作的组合就是领域的业务逻辑，根据业务逻辑来设计领域所需要的属性。</p>
+<h1 id="架构分层"><a href="#架构分层" class="headerlink" title="架构分层"></a>架构分层</h1><p>简单的把MVC的三层映射为如下图的四层</p>
+<p>它的分层思想依赖关系即符合了 DDD 的在战术设计上的分层，又跟 MVC 的分层极为类似。从上往下，用户接口层对应了 MVC 中的 Controller 层，MVC 中的 Service 层被拆分成了应用层（用于编排逻辑）和领域层（实际业务逻辑编写），最底层的基础设施层对应了 MVC 中的 Dao 层及其他工具层。</p>
+<p><img src="/2022/06/05/architectureDesign/DDD/%E4%BC%A0%E7%BB%9F%E5%9B%9B%E5%B1%82.png" alt="传统四层"></p>
+<p>在该架构中，上层模块可以调用下层模块，反之不行。即<br>Interface ——&gt; application | domain | infrastructure<br>application ——&gt; domain | infrastructure<br>domain ——&gt; infrastructure</p>
+<p>分层作用<br> 分层 |    英文 |     描述 |<br> – |    –|     –|<br>表现层|    User Interface    |用户界面层，或者表现层，负责向用户显示解释用户命令|<br>应用层    |Application Layer    |定义软件要完成的任务，并且指挥协调领域对象进行不同的操作。该层不包含业务领域知识。|<br>领域层|    Domain Layer    |或称为模型层，系统的核心，负责表达业务概念，业务状态信息以及业务规则。即包含了该领域（问题域）所有复杂的业务知识抽象和规则定义。该层主要精力要放在领域对象分析上，可以从实体，值对象，聚合（聚合根），领域服务，领域事件，仓储，工厂等方面入手|</p>
+<p>基础设施层|    Infrastructure Layer    |主要有2方面内容，一是为领域模型提供持久化机制，当软件需要持久化能力时候才需要进行规划；一是对其他层提供通用的技术支持能力，如消息通信，通用工具，配置等的实现；|</p>
+<p>乍一看，这个分层思想好像很合理，与 MVC 的分层思想不冲突，而且我们也能按照 DDD 的思想去开展业务。但是我们从层级依赖上来看一下，上层依赖下层。在 MVC 的分层下，我们通常会认为越在下面的层，它距离实际的功能点的逻辑是越来越远的。也就是说一些通用的工具类、系统配置、消息发送接收配置、外部接口调用封装等通用型的功能都会被集中定义到基础设施层中。而这时，领域层却依赖了基础设置层，让本应该纯粹只处理限界上下内文的领域受到了外部服务或者一些配置的污染。而且我相信一旦有了基础设施这样一个大杂烩层之后，总会有那么几个人，把一些本应该放在领域里面的逻辑定义在了基础设施里面，逐渐你的架构就又开始退化。</p>
+<p><strong>为了解决这个问题，世界级编程大师 Robert C. Martin 提出了改进四层架构的思想：依赖倒置。他认为：</strong></p>
+<blockquote>
+<p>高层模块不应该依赖于底层模块，两者都应该依赖于抽象。抽象不应该依赖于细节，细节应该依赖于抽象。</p>
+</blockquote>
+<p><strong>在四层架构的世界中，上级需要做什么事情都是需要下级实际拥有这个能力，上级直接调用才能完成。而依赖倒置之后，只要下级定义了能力的接口，上级就可以通过依赖注入的方式来直接注入接口，调用接口方法即可。而下级对应的接口逻辑实现，被放置在基础设施层，提到了最上层，如下图所示：</strong></p>
+<p>各层直接用接口进行隔离,就可以把模块进行充分的解耦合<br>依赖倒置原则的包含如下的三层含义：<br>1.高层模块不应该依赖低层模块，两者都应该依赖其抽象<br>2.抽象不应该依赖细节<br>3.细节应该依赖抽象</p>
+<p>高层模块不依赖低层模块：那就可以在domain层定义存储的接口，如AARepository，但是不写具体的技术实现<br>抽象不依赖细节：在domain层里，不依赖其他包的类，如用到数据存储时，直接调用domain的抽象接口即可<br>高层通过依赖注入的方式，将基础设施的实现传到domain层中</p>
+<p><img src="/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%9B%9B%E5%B1%82.png" alt="依赖倒置四层"></p>
+<p><strong>如此一来，我们的架构就不再是分层的结构（从上往下调用）。而是将抽象全部堆在domain层，将细节全部往application和infrastructure去推。而越抽象越稳定，所以通过这种做法能够有效减少业务的变更。目的是让里面的于领域相关的东西稳定,少修改,业务无关的的放在外层,方便进行替换修改外层的东西</strong></p>
+<p>依赖倒置四层演化的六边形架构<br>从外往里看，领域模型（对应领域层）完全独立，可以自由地开展自己的业务。应用服务包含了领域服务进行逻辑编排，完成功能点的业务组装。并且应用服务作为业务系统的统一门面，提供各种适配的接口给外部来访问。</p>
+<p><img src="/2022/06/05/architectureDesign/DDD/%E5%85%AD%E8%BE%B9%E5%BD%A2%E6%9E%B6%E6%9E%84.png" alt="六边形架构"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hank Bai
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://bh.com/2022/06/05/architectureDesign/DDD/" title="DDD">http://bh.com/2022/06/05/architectureDesign/DDD/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/06/05/js/document/" rel="prev" title="浏览器 dom 解读">
+                  <i class="fa fa-chevron-left"></i> 浏览器 dom 解读
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/08/22/go/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" rel="next" title="go基础语法">
+                  go基础语法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hank Bai</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">98k</span>
+  </span>
+</div>
+
+
+  <script src='https://unpkg.com/mermaid@9.2.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"version":"9.2.2","theme":{"light":"default","dark":"dark","options":{"maxTextSize":99999}},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.2.2/mermaid.min.js","integrity":"sha256-CemUs9ITT7liCZpVMktcEw0BpAOZ1+mujlMB3UyuImU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.7.2/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"BAI-HANK","repo":"bai-hank.github.io","client_id":"ee40f9d8aaf703fdb6ed","client_secret":"64cd53b08de038c5276753612c35ace517544597","admin_user":"BAI-HANK","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.7.2/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"6ef7c4267b4b73895d16059fb1670dc8"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7}});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/custom/clickLove.js"></script>
+

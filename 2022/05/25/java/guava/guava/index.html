@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/blog.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-big-counter.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"bh.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":8,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="guavaGuava 项目是 Google 公司开源的 Java 核心库，它主要是包含一些在 Java 开发中经常使用到的功能，如数据校验、不可变集合、计数集合，集合增强操作、I&#x2F;O、缓存、字符串操作等。并且 Guava 广泛用于 Google 内部的 Java 项目中，也被其他公司广泛使用，甚至在新版 JDK 中直接引入了 Guava 中的优秀类库，所以质量毋庸置疑。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="guava Google 公司开源的 Java 核心库">
+<meta property="og:url" content="http://bh.com/2022/05/25/java/guava/guava/index.html">
+<meta property="og:site_name" content="Hank Blog">
+<meta property="og:description" content="guavaGuava 项目是 Google 公司开源的 Java 核心库，它主要是包含一些在 Java 开发中经常使用到的功能，如数据校验、不可变集合、计数集合，集合增强操作、I&#x2F;O、缓存、字符串操作等。并且 Guava 广泛用于 Google 内部的 Java 项目中，也被其他公司广泛使用，甚至在新版 JDK 中直接引入了 Guava 中的优秀类库，所以质量毋庸置疑。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-25T02:25:37.000Z">
+<meta property="article:modified_time" content="2022-12-16T03:55:43.078Z">
+<meta property="article:author" content="Hank Bai">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://bh.com/2022/05/25/java/guava/guava/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://bh.com/2022/05/25/java/guava/guava/","path":"2022/05/25/java/guava/guava/","title":"guava Google 公司开源的 Java 核心库"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>guava Google 公司开源的 Java 核心库 | Hank Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">热爱生活,拥抱开源,乐于分享</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">20</span></a></li><li class="menu-item menu-item-others"><a href="/others/" rel="section"><i class="fa fa-users fa-fw"></i>推荐</a></li><li class="menu-item menu-item-read"><a href="/read/" rel="section"><i class="fa fa-book fa-fw"></i>阅读</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#guava"><span class="nav-number">1.</span> <span class="nav-text">guava</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%8F%98%E9%9B%86%E5%90%88"><span class="nav-number">2.1.</span> <span class="nav-text">不可变集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%88%86%E7%BB%84"><span class="nav-number">2.2.</span> <span class="nav-text">集合分组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#map"><span class="nav-number">2.2.1.</span> <span class="nav-text">map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#table"><span class="nav-number">2.2.2.</span> <span class="nav-text">table</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiMap"><span class="nav-number">2.3.</span> <span class="nav-text">BiMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">工厂方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E4%BA%A4%E9%9B%86%EF%BC%8C%E5%B9%B6%E9%9B%86%EF%BC%8C%E5%B7%AE%E9%9B%86"><span class="nav-number">2.5.</span> <span class="nav-text">集合交集，并集，差集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#guava-%E7%BC%93%E5%AD%98"><span class="nav-number">3.</span> <span class="nav-text">guava 缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E6%AD%A2%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="nav-number">3.1.</span> <span class="nav-text">防止缓存击穿</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E7%9A%84%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E7%BC%93%E5%AD%98"><span class="nav-number">3.2.</span> <span class="nav-text">基于过期时间的最简单的缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#expireAfterAccess"><span class="nav-number">3.3.</span> <span class="nav-text">expireAfterAccess</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#expireAfterWrite"><span class="nav-number">3.4.</span> <span class="nav-text">expireAfterWrite</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD-cache"><span class="nav-number">3.5.</span> <span class="nav-text">加载 cache</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E7%BC%93%E5%AD%98-CacheLoader"><span class="nav-number">3.5.1.</span> <span class="nav-text">全局缓存 CacheLoader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%83%A8-item-Callable"><span class="nav-number">3.5.2.</span> <span class="nav-text">局部 item Callable</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#refreshAfterWrite"><span class="nav-number">3.6.</span> <span class="nav-text">refreshAfterWrite</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%B1%E5%BC%95%E7%94%A8"><span class="nav-number">3.7.</span> <span class="nav-text">弱引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%A7%BB%E9%99%A4%E7%9B%91%E5%90%AC%E5%99%A8"><span class="nav-number">3.8.</span> <span class="nav-text">缓存移除监听器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%BB%9F%E8%AE%A1"><span class="nav-number">3.9.</span> <span class="nav-text">缓存统计</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4"><span class="nav-number">4.</span> <span class="nav-text">计算中间代码的运行时间</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Bai"
+      src="/images/rocket.png">
+  <p class="site-author-name" itemprop="name">Hank Bai</p>
+  <div class="site-description" itemprop="description">全栈工程师</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="/1410199713@qq.com" title="E-Mail → 1410199713@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BAI-HANK" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BAI-HANK" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.alloyteam.com/nav/" title="http:&#x2F;&#x2F;www.alloyteam.com&#x2F;nav&#x2F;" rel="noopener" target="_blank">Web前端导航</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+
+      <div id="music163player" >
+         <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5236281&auto=0&height=32">
+         </iframe>
+      </div><div>
+  <br>
+  <canvas id="canvasDiyBlock" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas><script src="/js/custom/clock.js"></script>
+</div>
+      
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/BAI-HANK" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://bh.com/2022/05/25/java/guava/guava/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/rocket.png">
+      <meta itemprop="name" content="Hank Bai">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank Blog">
+      <meta itemprop="description" content="全栈工程师">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="guava Google 公司开源的 Java 核心库 | Hank Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          guava Google 公司开源的 Java 核心库
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-25 10:25:37" itemprop="dateCreated datePublished" datetime="2022-05-25T10:25:37+08:00">2022-05-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-16 11:55:43" itemprop="dateModified" datetime="2022-12-16T11:55:43+08:00">2022-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="guava"><a href="#guava" class="headerlink" title="guava"></a>guava</h1><p>Guava 项目是 Google 公司开源的 Java 核心库，它主要是包含一些在 Java 开发中经常使用到的功能，如数据校验、不可变集合、计数集合，集合增强操作、I/O、缓存、字符串操作等。并且 Guava 广泛用于 Google 内部的 Java 项目中，也被其他公司广泛使用，甚至在新版 JDK 中直接引入了 Guava 中的优秀类库，所以质量毋庸置疑。</p>
+<span id="more"></span> 
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.guava<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>guava<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>30.0-jre<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><h2 id="不可变集合"><a href="#不可变集合" class="headerlink" title="不可变集合"></a>不可变集合</h2><p>不可变对象有很多优点，包括：</p>
+<ul>
+<li>不受信任的库可以安全使用。</li>
+<li>线程安全：可以被许多线程使用，没有竞争条件的风险。</li>
+<li>不需要支持突变，并且可以通过该假设节省时间和空间。所有不可变集合实现都比它们的可变兄弟更节省内存。</li>
+<li>可以用作常数，期望它保持不变。</li>
+<li>不支持 null 值</li>
+<li>中途也是不可变的</li>
+</ul>
+<p>制作对象的不可变副本是一种很好的防御性编程技术。Guava 为每种标准类型提供简单易用的不可变版本 Collection，包括 Guava 自己的Collection变体。</p>
+<p>创建不可变集合的三种方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// jdk 提供的不可变集合,在语法层面没有提供类似 c# 的 readonly 这样的关键字，而是通过新增加集合类型来实现</span></span><br><span class="line"><span class="comment">// JDK 提供了Collections.unmodifiableXXX方法，但在我们看来，这些可以是</span></span><br><span class="line"><span class="comment">// 笨拙且冗长；在你想制作防御性副本的任何地方使用都不愉快</span></span><br><span class="line"><span class="comment">// 不安全：只有在没有人持有对原始集合的引用时，返回的集合才是真正不可变的</span></span><br><span class="line"><span class="comment">// 低效：数据结构仍然具有可变集合的所有开销，包括并发修改检查、哈希表中的额外空间等。</span></span><br><span class="line">&#123;</span><br><span class="line">    Set&lt;String&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">    set.add(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    set.add(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    set.add(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">    <span class="comment">// jdk 的不可变集合支持 null</span></span><br><span class="line">    set.add(<span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">var</span>  immutableSet=   Collections.unmodifiableSet(set);</span><br><span class="line">    <span class="comment">//不能被修改,修改就报错 UnsupportedOperationException</span></span><br><span class="line">    <span class="comment">//immutableSet.add(&quot;c&quot;);</span></span><br><span class="line">    <span class="comment">//对原集合的修改，不可变集合会受影响，是引用</span></span><br><span class="line">    set.add(<span class="string">&quot;c&quot;</span>);</span><br><span class="line">    immutableSet.forEach(out::println); <span class="comment">// a b c</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法1 of</span></span><br><span class="line"><span class="comment">//不可变集合里存在重复元素也不会报错</span></span><br><span class="line">&#123;</span><br><span class="line">    Set&lt;String&gt; immutableSet = ImmutableSet.of(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>);</span><br><span class="line">    <span class="comment">//不能被修改,修改就报错 UnsupportedOperationException</span></span><br><span class="line">    <span class="comment">//immutableSet.add(&quot;a&quot;);</span></span><br><span class="line">    immutableSet.forEach(out::println); <span class="comment">// a b</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法2 builder 构造器模式</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> build=ImmutableSet.&lt;String&gt;builder();</span><br><span class="line">    build.add(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    build.add(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    build.add(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">    build.build().forEach(out::println);<span class="comment">// a b</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法3 拷贝来自其他集合</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">list</span>  <span class="operator">=</span><span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;String&gt;();</span><br><span class="line">    list.add(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    list.add(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    list.add(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">    <span class="comment">//深拷贝</span></span><br><span class="line">    <span class="keyword">var</span> immutableSet=ImmutableSet.copyOf(list);</span><br><span class="line">    list.add(<span class="string">&quot;c&quot;</span>);</span><br><span class="line">    <span class="comment">//对原集合的修改，不可变集合不会受影响</span></span><br><span class="line">    immutableSet.forEach(out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>不可变集合除了上面演示的 set 之外，还有很多不可变集合，下面是 Guava 中不可变集合和其他集合的对应关系</strong></p>
+<table>
+<thead>
+<tr>
+<th>可变集合接口</th>
+<th>属于JDK还是Guava</th>
+<th>不可变版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Collection</td>
+<td>JDK</td>
+<td>ImmutableCollection</td>
+</tr>
+<tr>
+<td>List</td>
+<td>JDK</td>
+<td>ImmutableList</td>
+</tr>
+<tr>
+<td>Set</td>
+<td>JDK</td>
+<td>ImmutableSet</td>
+</tr>
+<tr>
+<td>SortedSet,NavigableSet</td>
+<td>JDK</td>
+<td>ImmutableSortedSet</td>
+</tr>
+<tr>
+<td>Map</td>
+<td>JDK</td>
+<td>ImmutableMap</td>
+</tr>
+<tr>
+<td>SortedMap</td>
+<td>JDK</td>
+<td>ImmutableSortedMap</td>
+</tr>
+<tr>
+<td>Multiset</td>
+<td>Guava</td>
+<td>ImmutableMultiset</td>
+</tr>
+<tr>
+<td>SortedMultiset</td>
+<td>Guava</td>
+<td>ImmutableSortedMultiset</td>
+</tr>
+<tr>
+<td>Multimap</td>
+<td>Guava</td>
+<td>ImmutableMultimap</td>
+</tr>
+<tr>
+<td>ListMultimap</td>
+<td>Guava</td>
+<td>ImmutableListMultimap</td>
+</tr>
+<tr>
+<td>SetMultimap</td>
+<td>Guava</td>
+<td>ImmutableSetMultimap</td>
+</tr>
+<tr>
+<td>BiMap</td>
+<td>Guava</td>
+<td>ImmutableBiMap</td>
+</tr>
+<tr>
+<td>ClassToInstanceMap</td>
+<td>Guava</td>
+<td>ImmutableClassToInstanceMap</td>
+</tr>
+<tr>
+<td>Table</td>
+<td>Guava</td>
+<td>ImmutableTable</td>
+</tr>
+</tbody></table>
+<p>guava 扩展了许多独有的集合便利性非常好</p>
+<h2 id="集合分组"><a href="#集合分组" class="headerlink" title="集合分组"></a>集合分组</h2><p><strong>Multimap的特点其实就是可以包含有几个重复Key的value，可以put进入多个不同value但是相同的key，但是又不会覆盖前面的内容</strong></p>
+<h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><p>可变集合的分组，非常方便可以进行分组后获取数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ListMultimap&lt;String,Integer&gt; mapLIst= ArrayListMultimap.create();</span><br><span class="line">  mapLIst.put(<span class="string">&quot;a&quot;</span>,<span class="number">1</span>);</span><br><span class="line">  mapLIst.put(<span class="string">&quot;a&quot;</span>,<span class="number">2</span>);</span><br><span class="line">  mapLIst.put(<span class="string">&quot;b&quot;</span>,<span class="number">3</span>);</span><br><span class="line">  mapLIst.put(<span class="string">&quot;b&quot;</span>,<span class="number">4</span>);</span><br><span class="line">  mapLIst.forEach((key,value)-&gt;&#123;</span><br><span class="line">      out.println(<span class="string">&quot;key:&quot;</span>+key+<span class="string">&quot; , value:&quot;</span>+value);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// key:a , value:1</span></span><br><span class="line">  <span class="comment">// key:a , value:2</span></span><br><span class="line">  <span class="comment">// key:b , value:3</span></span><br><span class="line">  <span class="comment">// key:b , value:4</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> list= mapLIst.get(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">  </span><br><span class="line">  list.forEach(out::println);</span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不可变集合的分组，非常方便可以进行分组后获取数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="keyword">var</span> multimapList=ImmutableListMultimap.&lt;String,Integer&gt;of(</span><br><span class="line">          <span class="string">&quot;a&quot;</span>,<span class="number">1</span>,</span><br><span class="line">          <span class="string">&quot;a&quot;</span>,<span class="number">2</span>,</span><br><span class="line">          <span class="string">&quot;b&quot;</span>,<span class="number">3</span>,</span><br><span class="line">          <span class="string">&quot;b&quot;</span>,<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">  multimapList.forEach((key,value)-&gt;&#123;</span><br><span class="line">      out.println(<span class="string">&quot;key:&quot;</span>+key+<span class="string">&quot; , value:&quot;</span>+value);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">// key:a , value:1</span></span><br><span class="line">  <span class="comment">// key:a , value:2</span></span><br><span class="line">  <span class="comment">// key:b , value:3</span></span><br><span class="line">  <span class="comment">// key:b , value:4</span></span><br><span class="line">  <span class="keyword">var</span> list= multimapList.get(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">  list.forEach(out::println); <span class="comment">// 1 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="table"><a href="#table" class="headerlink" title="table"></a>table</h3><blockquote>
+<p>Table&lt;R,C,V&gt; table = HashBasedTable.create();，由泛型可以看出，table由双主键R（行）,C（列）共同决定，V是存储值<br>新增数据：table.put(R,C,V)<br>获取数据：V v = table.get(R,C)<br>遍历数据: Set<R> set = table.rowKeySet(); Set<C> set = table.columnKeySet();   　　</p>
+</blockquote>
+<p>用 原生 steam 更方便</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 神奇的表格</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestScore</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> String studentName;</span><br><span class="line">  <span class="keyword">private</span> String subject;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 年级</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  <span class="keyword">private</span> String classGrade;</span><br><span class="line">  <span class="keyword">private</span> Double score;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 学期</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  <span class="keyword">private</span> String semester;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">TestScore</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TestScore</span>(<span class="string">&quot;张三&quot;</span>, <span class="string">&quot;语文&quot;</span>, <span class="string">&quot;三年二班&quot;</span>, <span class="number">80D</span>, <span class="string">&quot;2021上&quot;</span>);</span><br><span class="line"><span class="type">TestScore</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TestScore</span>(<span class="string">&quot;张三&quot;</span>, <span class="string">&quot;数学&quot;</span>, <span class="string">&quot;三年二班&quot;</span>, <span class="number">80D</span>, <span class="string">&quot;2021上&quot;</span>);</span><br><span class="line"><span class="type">TestScore</span> <span class="variable">t3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TestScore</span>(<span class="string">&quot;李四&quot;</span>, <span class="string">&quot;语文&quot;</span>, <span class="string">&quot;三年二班&quot;</span>, <span class="number">100D</span>, <span class="string">&quot;2021上&quot;</span>);</span><br><span class="line"><span class="type">TestScore</span> <span class="variable">t4</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TestScore</span>(<span class="string">&quot;李四&quot;</span>, <span class="string">&quot;数学&quot;</span>, <span class="string">&quot;三年二班&quot;</span>, <span class="number">90D</span>, <span class="string">&quot;2021上&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">var</span> <span class="variable">testScoreList</span> <span class="operator">=</span> Lists.newArrayList(t1, t2, t3, t4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 统计每个学生的总分</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//模拟 excel 表格 通过行索引和列索引定位唯一的单元格</span></span><br><span class="line">  <span class="type">var</span> <span class="variable">table</span> <span class="operator">=</span> HashBasedTable.&lt;String, String, Double&gt;create();</span><br><span class="line">  testScoreList.forEach(p -&gt; &#123;</span><br><span class="line">    <span class="comment">// 行 列 单个格的值</span></span><br><span class="line">    table.put(p.getStudentName(), p.getSubject(), p.getScore());</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//按行统计</span></span><br><span class="line">  <span class="type">var</span> <span class="variable">rows</span> <span class="operator">=</span> table.rowMap();</span><br><span class="line">  <span class="type">var</span> <span class="variable">newMap</span> <span class="operator">=</span> Maps.&lt;String, Double&gt;newHashMap();</span><br><span class="line">  rows.forEach((p, q) -&gt; &#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">count</span> <span class="operator">=</span> q.values().stream().mapToDouble(l -&gt; l).sum();</span><br><span class="line">    newMap.put(p, count);</span><br><span class="line">  &#125;);</span><br><span class="line">  newMap.forEach((p, q) -&gt; &#123;</span><br><span class="line">    out.println(p + <span class="string">&quot;:&quot;</span> + q);</span><br><span class="line">    <span class="comment">//李四:190.0</span></span><br><span class="line">    <span class="comment">//张三:160.0</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 统计每个学生的总分</span></span><br><span class="line"><span class="comment">//不使用框架实现,通过 stream 实现,代码量差不多</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">groups</span> <span class="operator">=</span> testScoreList.stream().collect(Collectors.groupingBy(p -&gt; p.getStudentName()));</span><br><span class="line">  <span class="type">var</span> <span class="variable">newMap</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Double&gt;();</span><br><span class="line">  groups.forEach((p, q) -&gt; &#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">count</span> <span class="operator">=</span> q.stream().mapToDouble(l -&gt; l.score).sum();</span><br><span class="line">    newMap.put(p, count);</span><br><span class="line">  &#125;);</span><br><span class="line">  newMap.forEach((p, q) -&gt; &#123;</span><br><span class="line">    out.println(p + <span class="string">&quot;:&quot;</span> + q);</span><br><span class="line">    <span class="comment">//李四:190.0</span></span><br><span class="line">    <span class="comment">//张三:160.0</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//计算科目总分</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//模拟 excel 表格 通过行索引和列索引定位唯一的单元格</span></span><br><span class="line">  <span class="type">var</span> <span class="variable">table</span> <span class="operator">=</span> HashBasedTable.&lt;String, String, Double&gt;create();</span><br><span class="line">  testScoreList.forEach(p -&gt; &#123;</span><br><span class="line">    <span class="comment">// 行 列 单个格的值</span></span><br><span class="line">    table.put(p.getStudentName(), p.getSubject(), p.getScore());</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//按列统计</span></span><br><span class="line">  <span class="type">var</span> <span class="variable">cols</span> <span class="operator">=</span> table.columnMap();</span><br><span class="line">  <span class="type">var</span> <span class="variable">newMap</span> <span class="operator">=</span> Maps.&lt;String, Double&gt;newHashMap();</span><br><span class="line">  cols.forEach((p, q) -&gt; &#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">count</span> <span class="operator">=</span> q.values().stream().mapToDouble(l -&gt; l).sum();</span><br><span class="line">    newMap.put(p, count);</span><br><span class="line">  &#125;);</span><br><span class="line">  newMap.forEach((p, q) -&gt; &#123;</span><br><span class="line">    out.println(p + <span class="string">&quot;:&quot;</span> + q);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 统计每个学科的总分</span></span><br><span class="line"><span class="comment">//不使用框架实现,通过 stream 实现,代码量差不多</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">groups</span> <span class="operator">=</span> testScoreList.stream().collect(Collectors.groupingBy(p -&gt; p.getSubject()));</span><br><span class="line">  <span class="type">var</span> <span class="variable">newMap</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, Double&gt;();</span><br><span class="line">  groups.forEach((p, q) -&gt; &#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">count</span> <span class="operator">=</span> q.stream().mapToDouble(l -&gt; l.score).sum();</span><br><span class="line">    newMap.put(p, count);</span><br><span class="line">  &#125;);</span><br><span class="line">  newMap.forEach((p, q) -&gt; &#123;</span><br><span class="line">    out.println(p + <span class="string">&quot;:&quot;</span> + q);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不使用框架实现,通过 stream 实现,代码量可以更少</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">groups</span> <span class="operator">=</span> testScoreList.stream().collect(Collectors.groupingBy(</span><br><span class="line">      p -&gt; p.getSubject(),Collectors.summingDouble(p-&gt;p.score)));</span><br><span class="line">  groups.forEach((p, q) -&gt; &#123;</span><br><span class="line">    out.println(p + <span class="string">&quot;:&quot;</span> + q);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="BiMap"><a href="#BiMap" class="headerlink" title="BiMap"></a>BiMap</h2><p> 用处不大</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// BiMap提供双向关系维护，但是业务上需要保证值唯一，如果不唯一，需使用forcePut</span></span><br><span class="line"><span class="comment">// key 和 value 都是唯一的，可以通过 key 找 value，也可以通过 value 找 key</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">biMap</span> <span class="operator">=</span> HashBiMap.&lt;String, Integer&gt;create();</span><br><span class="line">  biMap.put(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>);</span><br><span class="line">  biMap.forcePut(<span class="string">&quot;b&quot;</span>, <span class="number">1</span>);</span><br><span class="line">  out.println(biMap.get(<span class="string">&#x27;a&#x27;</span>));</span><br><span class="line">  out.println(biMap.inverse().get(<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h2><p>快速的初始化集合</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JDK</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">unModifyList</span> <span class="operator">=</span>  List.of(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//要做初始化,只能是这种封锁的方式</span></span><br><span class="line">  <span class="type">var</span> <span class="variable">list</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;() &#123;</span><br><span class="line">    &#123;</span><br><span class="line">      add(<span class="number">1</span>);</span><br><span class="line">      add(<span class="number">2</span>);</span><br><span class="line">      add(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//guava工厂模式</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">list</span> <span class="operator">=</span> Lists.newArrayList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line">  list.add(<span class="number">4</span>);</span><br><span class="line">  list.forEach(System.out::println);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="集合交集，并集，差集"><a href="#集合交集，并集，差集" class="headerlink" title="集合交集，并集，差集"></a>集合交集，并集，差集</h2><h1 id="guava-缓存"><a href="#guava-缓存" class="headerlink" title="guava 缓存"></a>guava 缓存</h1><p>缓存分为本地缓存与分布式缓存。本地缓存为了保证线程安全问题，一般使用ConcurrentMap的方式保存在内存之中，而常见的分布式缓存则有Redis，MongoDB等。<br>缓存在各种用例中都非常有用。例如，当一个值的计算或检索成本很高时，您应该考虑使用缓存，并且您将多次在某个输入上需要它的值</p>
+<p>Guava缓存适用于以下情况：</p>
+<ul>
+<li>愿意花费一些内存来提高速度。</li>
+<li>使用场景有时会多次查询key。</li>
+<li>缓存将不需要存储超出RAM容量的数据</li>
+<li>线程安全的缓存，与ConcurrentMap相似，但前者增加了更多的元素失效策略，后者只能显示的移除元素。</li>
+<li>Guava Cache提供了三种基本的缓存回收方式：基于容量回收、定时回收和基于引用回收。定时回收有两种：按照写入时间，最早写入的最先回收；按照访问时间，最早访问的最早回收；</li>
+<li>监控缓存加载/命中情况</li>
+</ul>
+<p><strong>Guava提供了设置并发级别的API，使得缓存支持并发的写入和读取。与ConcurrentHashMap类似，Guava cache的并发也是通过分离锁实现。在通常情况下，推荐将并发级别设置为服务器cpu核心数， Cache有区别于ConcurrentHashMap的使用，就是因为其自带有自动刷新和自动失效的功能，避免我们去自己编写刷新和失效的后台线程程，内存缓存模块，用于将数据缓存到JVM内存中</strong></p>
+<p>失效时间，存活时间策略可以单独设置或组合配置</p>
+<ul>
+<li>expireAfterWrite  <strong>自条目创建后</strong> 经过指定的持续时间或值的最新替换后，使条目过期。–常用，多个线程是线程之间会互相等待</li>
+<li>refreshAfterWrite 是指在创建缓存后，如果经过一定时间没有更新或覆盖，则会在下一次获取该值的时候，会在后台异步去刷新缓存，<br>如果新的缓存值还没有load到时，则会先返回旧值 –常用 比 expireAfterWrite 性能好，线程之间不会等待。</li>
+<li>expireAfterAccess <strong>仅在自上次通过读取或写入访问条目</strong> 后经过指定持续时间后才使条目过期，只要对条目读取或写入过就进行重新计时，多个线程是线程之间会互相等待</li>
+</ul>
+<p>添加,插入key</p>
+<ul>
+<li>get,要么返回已经缓存的值，要么使用CacheLoader向缓存原子地加载新值；</li>
+<li>getUnchecked CacheLoader 会抛异常，定义的CacheLoader没有声明任何检查型异常，则可以 getUnchecked 查找缓存；反之不能；</li>
+<li>getAll,方法用来执行批量查询；</li>
+<li>put,向缓存显式插入值，Cache.asMap()也能修改值，但不具原子性；</li>
+<li>getIfPresent,从现有的缓存中获取，如果缓存中有key，则返回value，如果没有则返回null</li>
+</ul>
+<p>清除key,guava cache 自带清除机制，但仍旧可以手动清除：</p>
+<ul>
+<li>个别清除：Cache.invalidate(key)</li>
+<li>批量清除：Cache.invalidateAll(keys)</li>
+<li>清除所有缓存项：Cache.invalidateAll()</li>
+</ul>
+<p><strong>可以通过 asMao() 获取底层的 map</strong></p>
+<h2 id="防止缓存击穿"><a href="#防止缓存击穿" class="headerlink" title="防止缓存击穿"></a>防止缓存击穿</h2><p><a href="load%E8%BF%87%E7%A8%8B.png">load过程</a></p>
+<blockquote>
+<p>从图上容易看出，每次只有找不到值都会进入load方法，换句话说，只有发生“取值”操作，才会执行load，然而为了防止“缓存穿透”，在多线程的环境下，任何时刻&gt;只允许一个线程操作执行load操作 </p>
+</blockquote>
+<p>但在执行load操作这个步骤，expire 与 refresh 的线程机制不同：</p>
+<ul>
+<li>expire 在load 阶段——同步机制：当前线程load未完成，其他线程呈阻塞状态，待当前线程load完成，其他线程均需进行”获得锁–获得值–释放锁“的过程。这种<br>方法会让性能有一定的损耗。但是所有线程获取的都是最新的值</li>
+<li>refresh 在load阶段——异步机制 ：当前线程load未完成，其他线程仍可以取原来的值，等当前线程load完成后，下次某线程再取值时，会判断系统时间间隔是否<br>超过设定refresh时间，来决定是否设定新值。所以，refresh机制的特点是，设定30分钟刷新，30min后并不一定就是立马就能保证取到新值。<br>能够想象，只要refresh得时间小于expire时间，就能保证多线程在load取值时不阻塞，也能保证refresh时间到期后，取旧值向新值得平滑过渡，当然，仍旧不能解决取到旧值得问题。</li>
+</ul>
+<h2 id="基于过期时间的最简单的缓存"><a href="#基于过期时间的最简单的缓存" class="headerlink" title="基于过期时间的最简单的缓存"></a>基于过期时间的最简单的缓存</h2><p>put  和  getIfPresent 配合使用</p>
+<ul>
+<li>put 更新缓存</li>
+<li>getIfPresent 从现有的缓存中获取，如果缓存中有key，则返回value，如果没有则返回null</li>
+</ul>
+<h2 id="expireAfterAccess"><a href="#expireAfterAccess" class="headerlink" title="expireAfterAccess"></a>expireAfterAccess</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cache=  CacheBuilder.newBuilder()</span><br><span class="line">      <span class="comment">// 设置并发级别为cpu核心数，默认为4，并发级别是指可以同时写缓存的线程数</span></span><br><span class="line">      .concurrencyLevel(Runtime.getRuntime().availableProcessors())</span><br><span class="line">      <span class="comment">// 初始记录数，最大记录数</span></span><br><span class="line">    .initialCapacity(<span class="number">10</span>).maximumSize(<span class="number">20</span>)</span><br><span class="line">    .expireAfterAccess(Duration.ofSeconds(<span class="number">1</span>))</span><br><span class="line">    <span class="comment">//.expireAfterWrite(Duration.ofSeconds(1))</span></span><br><span class="line">    .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">//写入后重新计算时间</span></span><br><span class="line">cache.put(<span class="string">&quot;a&quot;</span>,<span class="number">1</span>);</span><br><span class="line">Thread.sleep(<span class="number">900</span>);</span><br><span class="line"><span class="comment">//读取后重新计算时间</span></span><br><span class="line">System.out.println(cache.getIfPresent(<span class="string">&quot;a&quot;</span>));</span><br><span class="line"><span class="comment">//1</span></span><br><span class="line"></span><br><span class="line">Thread.sleep(<span class="number">900</span>);</span><br><span class="line"><span class="comment">//读取后重新计算时间</span></span><br><span class="line">System.out.println(cache.getIfPresent(<span class="string">&quot;a&quot;</span>));</span><br><span class="line"><span class="comment">//1</span></span><br><span class="line"></span><br><span class="line">Thread.sleep(<span class="number">1000</span>);</span><br><span class="line"><span class="comment">//过期了</span></span><br><span class="line">System.out.println(cache.getIfPresent(<span class="string">&quot;a&quot;</span>));</span><br><span class="line"><span class="comment">//null</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//写入后重新计算时间</span></span><br><span class="line">cache.put(<span class="string">&quot;a&quot;</span>,<span class="number">1</span>);</span><br><span class="line">Thread.sleep(<span class="number">900</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//写入后重新计算时间</span></span><br><span class="line">cache.put(<span class="string">&quot;a&quot;</span>,<span class="number">2</span>);</span><br><span class="line">Thread.sleep(<span class="number">900</span>);</span><br><span class="line"><span class="comment">//读取后重新计算时间</span></span><br><span class="line">System.out.println(cache.getIfPresent(<span class="string">&quot;a&quot;</span>));</span><br><span class="line"><span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">System.out.println(cache.getIfPresent(<span class="string">&quot;a&quot;</span>));</span><br><span class="line"><span class="comment">//null</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="expireAfterWrite"><a href="#expireAfterWrite" class="headerlink" title="expireAfterWrite"></a>expireAfterWrite</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cache=  CacheBuilder.newBuilder()</span><br><span class="line">          <span class="comment">// 设置并发级别为cpu核心数，默认为4</span></span><br><span class="line">          .concurrencyLevel(Runtime.getRuntime().availableProcessors())</span><br><span class="line">          <span class="comment">// 初始记录数，最大记录数</span></span><br><span class="line">         .initialCapacity(<span class="number">10</span>).maximumSize(<span class="number">20</span>)</span><br><span class="line">         <span class="comment">//.expireAfterAccess(Duration.ofSeconds(1))</span></span><br><span class="line">         .expireAfterWrite(Duration.ofSeconds(<span class="number">1</span>))</span><br><span class="line">         .build();</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 自条目创建后，开始计时,后面不会在更新时间</span></span><br><span class="line"> cache.put(<span class="string">&quot;a&quot;</span>,<span class="number">1</span>);</span><br><span class="line"> Thread.sleep(<span class="number">900</span>);</span><br><span class="line"> System.out.println(cache.getIfPresent(<span class="string">&quot;a&quot;</span>));</span><br><span class="line"> <span class="comment">// 1</span></span><br><span class="line"> Thread.sleep(<span class="number">900</span>);</span><br><span class="line"> System.out.println(cache.getIfPresent(<span class="string">&quot;a&quot;</span>));</span><br><span class="line"> <span class="comment">// null</span></span><br><span class="line"></span><br><span class="line"> Thread.sleep(<span class="number">1000</span>);</span><br><span class="line"> System.out.println(cache.getIfPresent(<span class="string">&quot;a&quot;</span>));</span><br><span class="line">     <span class="comment">//null</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="加载-cache"><a href="#加载-cache" class="headerlink" title="加载 cache"></a>加载 cache</h2><h3 id="全局缓存-CacheLoader"><a href="#全局缓存-CacheLoader" class="headerlink" title="全局缓存 CacheLoader"></a>全局缓存 CacheLoader</h3><p><strong>先取缓存——娶不到再执行load</strong></p>
+<p>CacheLoader 和 get 配合使用</p>
+<ul>
+<li>使用 get 要么返回已经缓存的值，要么使用 CacheLoader 向缓存原子地加载新值</li>
+<li>任然可以使用 put 更新缓存值</li>
+<li>在这种情况下使用 getIfPresent 没有意义</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">cache</span> <span class="operator">=</span> CacheBuilder.newBuilder()</span><br><span class="line">        <span class="comment">// 设置并发级别为cpu核心数，默认为4</span></span><br><span class="line">        .concurrencyLevel(Runtime.getRuntime().availableProcessors())</span><br><span class="line">        <span class="comment">// 初始记录数，最大记录数</span></span><br><span class="line">        .initialCapacity(<span class="number">10</span>).maximumSize(<span class="number">20</span>)</span><br><span class="line">        .expireAfterAccess(Duration.ofSeconds(<span class="number">1</span>))</span><br><span class="line">        <span class="comment">//.expireAfterWrite(Duration.ofSeconds(1))</span></span><br><span class="line">        .build(<span class="keyword">new</span> <span class="title class_">CacheLoader</span>&lt;String, Optional&lt;String&gt;&gt;() &#123;</span><br><span class="line">                  <span class="meta">@Override</span></span><br><span class="line">                  <span class="keyword">public</span> Optional&lt;String&gt; <span class="title function_">load</span><span class="params">(String s)</span>  &#123;</span><br><span class="line">                    <span class="type">String</span> <span class="variable">tmp</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">                    <span class="keyword">switch</span> (s) &#123;</span><br><span class="line">                      <span class="keyword">case</span> <span class="string">&quot;a&quot;</span>:</span><br><span class="line">                        tmp = <span class="string">&quot;a:&quot;</span>+LocalDateTime.now().toLocalTime().toString();</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                      <span class="keyword">default</span>:</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">return</span> Optional.ofNullable(tmp);</span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;</span><br><span class="line">        );</span><br><span class="line">    <span class="comment">//没有缓存 load</span></span><br><span class="line">    System.out.println(cache.get(<span class="string">&quot;a&quot;</span>).isPresent()?  cache.get(<span class="string">&quot;a&quot;</span>).get():<span class="literal">null</span>);</span><br><span class="line">    <span class="comment">//a:10:28:19.755542900</span></span><br><span class="line">    Thread.sleep(<span class="number">900</span>);</span><br><span class="line">    <span class="comment">//缓存有，用缓存</span></span><br><span class="line">    System.out.println(cache.get(<span class="string">&quot;a&quot;</span>).isPresent()?  cache.get(<span class="string">&quot;a&quot;</span>).get():<span class="literal">null</span>);</span><br><span class="line">     <span class="comment">//a:10:28:19.755542900</span></span><br><span class="line">    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">    <span class="comment">//缓存过期,再次 load</span></span><br><span class="line">    System.out.println(cache.get(<span class="string">&quot;a&quot;</span>).isPresent()?  cache.get(<span class="string">&quot;a&quot;</span>).get():<span class="literal">null</span>);</span><br><span class="line">    a:<span class="number">10</span>:<span class="number">28</span>:<span class="number">21.699160500</span></span><br><span class="line">    <span class="comment">//缓存不存在，load </span></span><br><span class="line">    System.out.println( cache.get(<span class="string">&quot;b&quot;</span>).isPresent()?  cache.get(<span class="string">&quot;a&quot;</span>).get():<span class="literal">null</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="局部-item-Callable"><a href="#局部-item-Callable" class="headerlink" title="局部 item Callable"></a>局部 item Callable</h3><p>Callable 和 get 配合使用</p>
+<ul>
+<li>使用 get 要么返回已经缓存的值，要么使用 Callable 向缓存原子地加载新值</li>
+<li>任然可以使用 put 更新缓存值</li>
+<li>在这种情况下使用 getIfPresent 没有意义<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">cache</span> <span class="operator">=</span> CacheBuilder.newBuilder()</span><br><span class="line">      <span class="comment">// 设置并发级别为cpu核心数，默认为4</span></span><br><span class="line">      .concurrencyLevel(Runtime.getRuntime().availableProcessors())</span><br><span class="line">      <span class="comment">// 初始记录数，最大记录数</span></span><br><span class="line">      .initialCapacity(<span class="number">10</span>).maximumSize(<span class="number">20</span>)</span><br><span class="line">      .expireAfterAccess(Duration.ofSeconds(<span class="number">1</span>))</span><br><span class="line">      <span class="comment">//.expireAfterWrite(Duration.ofSeconds(1))</span></span><br><span class="line">      .build();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//缓存没有值，使用回调生成值</span></span><br><span class="line">  System.out.println(cache.get(<span class="string">&quot;a&quot;</span>, (Callable&lt;String&gt;) () -&gt; <span class="string">&quot;a:&quot;</span> + LocalDateTime.now().toLocalTime().toString()));</span><br><span class="line">  <span class="comment">// a:11:14:19.617927100</span></span><br><span class="line">  Thread.sleep(<span class="number">900</span>);</span><br><span class="line">  <span class="comment">//这次获取的是缓存值</span></span><br><span class="line">  System.out.println(cache.get(<span class="string">&quot;a&quot;</span>, (Callable&lt;String&gt;) () -&gt; <span class="string">&quot;a:&quot;</span> + LocalDateTime.now().toLocalTime().toString()));</span><br><span class="line">  <span class="comment">//a:11:14:19.617927100</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="refreshAfterWrite"><a href="#refreshAfterWrite" class="headerlink" title="refreshAfterWrite"></a>refreshAfterWrite</h2><p>多个线程都去load 的时候，refreshAfterWrite 可以只让一个线程去load,其他线程用旧值代替<br> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">cache</span> <span class="operator">=</span> CacheBuilder.newBuilder()</span><br><span class="line">        <span class="comment">// 设置并发级别为cpu核心数，默认为4</span></span><br><span class="line">        .concurrencyLevel(Runtime.getRuntime().availableProcessors())</span><br><span class="line">        <span class="comment">// 初始记录数，最大记录数</span></span><br><span class="line">        .initialCapacity(<span class="number">10</span>).maximumSize(<span class="number">20</span>)</span><br><span class="line">        <span class="comment">//.expireAfterAccess(Duration.ofSeconds(1))</span></span><br><span class="line">        <span class="comment">//.expireAfterWrite(Duration.ofSeconds(1))</span></span><br><span class="line">        .refreshAfterWrite(Duration.ofSeconds(<span class="number">1</span>))</span><br><span class="line">        .build(<span class="keyword">new</span> <span class="title class_">CacheLoader</span>&lt;String, String&gt;() &#123;</span><br><span class="line">          <span class="meta">@Override</span></span><br><span class="line">          <span class="keyword">public</span> String <span class="title function_">load</span><span class="params">(String s)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">tmp</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">            <span class="keyword">switch</span> (s) &#123;</span><br><span class="line">              <span class="keyword">case</span> <span class="string">&quot;a&quot;</span>:</span><br><span class="line">                Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">                tmp = <span class="string">&quot;a:&quot;</span> + LocalDateTime.now().toLocalTime().toString();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">              <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> tmp;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    cache.put(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">    <span class="comment">//获取缓存的值</span></span><br><span class="line">    System.out.println(cache.get(<span class="string">&quot;a&quot;</span>));</span><br><span class="line">    <span class="comment">//1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//缓存失效，load</span></span><br><span class="line">    <span class="type">var</span> <span class="variable">thread1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">      <span class="meta">@SneakyThrows</span></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        System.out.println(Thread.currentThread().getName() +<span class="string">&quot;,&quot;</span>+ cache.get(<span class="string">&quot;a&quot;</span>));</span><br><span class="line">        <span class="comment">//thread1,a:13:45:53.725228700</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    thread1.setName(<span class="string">&quot;thread1&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//缓存失效,用旧值替代,因为已经有一个线程已经在load 处于阻塞状态，这个线程直接返回旧值</span></span><br><span class="line">    <span class="type">var</span> <span class="variable">thread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">      <span class="meta">@SneakyThrows</span></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        System.out.println(Thread.currentThread().getName()  +<span class="string">&quot;,&quot;</span>+ cache.get(<span class="string">&quot;a&quot;</span>));</span><br><span class="line">        <span class="comment">//thread2,1</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    thread2.setName(<span class="string">&quot;thread2&quot;</span>);</span><br><span class="line"></span><br><span class="line">    thread1.start();thread2.start();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h2><p>通过weakKeys和weakValues方法，可以指定Cache只保存“对缓存记录key和value的弱引用”。这样，当没有其他强引用指向key和value时，key和value对象就会被垃圾回收器回收。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">cache</span> <span class="operator">=</span> CacheBuilder.newBuilder()</span><br><span class="line">      <span class="comment">// 设置并发级别为cpu核心数，默认为4</span></span><br><span class="line">      .concurrencyLevel(Runtime.getRuntime().availableProcessors())</span><br><span class="line">      <span class="comment">// 初始记录数，最大记录数</span></span><br><span class="line">      .initialCapacity(<span class="number">10</span>).maximumSize(<span class="number">20</span>)</span><br><span class="line">      <span class="comment">//.expireAfterAccess(Duration.ofSeconds(1))</span></span><br><span class="line">      .expireAfterWrite(Duration.ofSeconds(<span class="number">1</span>))</span><br><span class="line">      <span class="comment">//对 key 进行弱引用</span></span><br><span class="line">      .weakValues()</span><br><span class="line">      .build();</span><br><span class="line">  <span class="type">var</span> <span class="variable">value</span> <span class="operator">=</span><span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">  <span class="comment">//这里相当于一种绑定关系，把堆里的对象绑定给 key,但是这种绑定是弱引用的关系</span></span><br><span class="line">  cache.put(<span class="string">&quot;a&quot;</span>, value);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//原来的栈指向新的对象</span></span><br><span class="line">  value=<span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">  <span class="comment">//回收弱引用对象</span></span><br><span class="line">  System.gc();</span><br><span class="line">  </span><br><span class="line">  System.out.println(cache.getIfPresent(<span class="string">&quot;a&quot;</span>));</span><br><span class="line">  <span class="comment">//null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="缓存移除监听器"><a href="#缓存移除监听器" class="headerlink" title="缓存移除监听器"></a>缓存移除监听器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">var</span> <span class="variable">cache</span> <span class="operator">=</span> CacheBuilder.newBuilder()</span><br><span class="line"><span class="comment">//同步移除</span></span><br><span class="line">.removalListener((notice)-&gt;&#123;</span><br><span class="line">            <span class="keyword">var</span>  name=Thread.currentThread().getName();</span><br><span class="line">            System.out.println(name+<span class="string">&quot;,监听到移除的 key:&quot;</span>+notice.getKey());</span><br><span class="line">            System.out.println(name+<span class="string">&quot;,监听到移除的 value:&quot;</span>+notice.getValue());</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//异步移除</span></span><br><span class="line">.removalListener(RemovalListeners.asynchronous(notice-&gt;&#123;</span><br><span class="line">  <span class="keyword">var</span>  name=Thread.currentThread().getName();</span><br><span class="line">    System.out.println(name+<span class="string">&quot;,监听到移除的 key:&quot;</span>+notice.getKey());</span><br><span class="line">    System.out.println(name+<span class="string">&quot;,监听到移除的 value:&quot;</span>+notice.getValue());</span><br><span class="line"></span><br><span class="line">&#125;, Executors.newSingleThreadExecutor()))</span><br><span class="line">.build();</span><br><span class="line">cache.invalidate(<span class="string">&quot;a&quot;</span>);</span><br><span class="line"> <span class="comment">//缓存移除后，不会显式地立即删除，需要自己清除</span></span><br><span class="line">cache.cleanUp(); </span><br></pre></td></tr></table></figure>
+
+<h2 id="缓存统计"><a href="#缓存统计" class="headerlink" title="缓存统计"></a>缓存统计</h2><p>缓存统计功能，需要使用 recordStats() 打开缓存统计功能,没有发现好用<br>返回如下统计信息：</p>
+<ul>
+<li>hitRate()：缓存命中率；</li>
+<li>hitMiss(): 缓存失误率；</li>
+<li>loadcount() ; 加载次数；</li>
+<li>averageLoadPenalty()：加载新值的平均时间，单位为纳秒；</li>
+<li>evictionCount()：缓存项被回收的总数，不包括显式清除。</li>
+</ul>
+<h1 id="计算中间代码的运行时间"><a href="#计算中间代码的运行时间" class="headerlink" title="计算中间代码的运行时间"></a>计算中间代码的运行时间</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">stopWatch</span> <span class="operator">=</span> Stopwatch.createStarted();</span><br><span class="line">  <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">  <span class="keyword">var</span> times= stopWatch.elapsed(TimeUnit.SECONDS);</span><br><span class="line">  System.out.println(times);</span><br><span class="line">  <span class="comment">//10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hank Bai
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://bh.com/2022/05/25/java/guava/guava/" title="guava Google 公司开源的 Java 核心库">http://bh.com/2022/05/25/java/guava/guava/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/25/java/javaGenerics/javaGenerics/" rel="prev" title="java范型">
+                  <i class="fa fa-chevron-left"></i> java范型
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/29/linux/linux/" rel="next" title="linux 基础知识">
+                  linux 基础知识 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hank Bai</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">98k</span>
+  </span>
+</div>
+
+
+  <script src='https://unpkg.com/mermaid@9.2.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"version":"9.2.2","theme":{"light":"default","dark":"dark","options":{"maxTextSize":99999}},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.2.2/mermaid.min.js","integrity":"sha256-CemUs9ITT7liCZpVMktcEw0BpAOZ1+mujlMB3UyuImU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.7.2/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"BAI-HANK","repo":"bai-hank.github.io","client_id":"ee40f9d8aaf703fdb6ed","client_secret":"64cd53b08de038c5276753612c35ace517544597","admin_user":"BAI-HANK","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.7.2/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"12a46223af19678e40dee45836695190"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7}});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/custom/clickLove.js"></script>
+

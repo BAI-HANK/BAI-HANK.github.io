@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/blog.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/blog.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/blog.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-big-counter.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"bh.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":8,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="事务的概念事务就是一组逻辑操作的组合，它们执行的结果要么全部成功，要么全部失败。 事务有4个特性：  原子性：一个事务就是一个不可再分解的单位，事务中的操作要么全部做，要么全部不做（事务中的任务要么全部提交要么全部回滚，不可能出现一部分提交一部分回滚。例如：用户 A 给用户 B 转账 100 元，A 账户减100，那么 B 账户一定加 100） 一致性：事务执行后，所有的数据都应该保持一致状态。(">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="spring framework transaction">
+<meta property="og:url" content="http://bh.com/2022/05/25/java/springFramework/transaction/transaction/index.html">
+<meta property="og:site_name" content="Hank Blog">
+<meta property="og:description" content="事务的概念事务就是一组逻辑操作的组合，它们执行的结果要么全部成功，要么全部失败。 事务有4个特性：  原子性：一个事务就是一个不可再分解的单位，事务中的操作要么全部做，要么全部不做（事务中的任务要么全部提交要么全部回滚，不可能出现一部分提交一部分回滚。例如：用户 A 给用户 B 转账 100 元，A 账户减100，那么 B 账户一定加 100） 一致性：事务执行后，所有的数据都应该保持一致状态。(">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-25T02:25:37.000Z">
+<meta property="article:modified_time" content="2022-12-16T03:55:43.082Z">
+<meta property="article:author" content="Hank Bai">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://bh.com/2022/05/25/java/springFramework/transaction/transaction/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://bh.com/2022/05/25/java/springFramework/transaction/transaction/","path":"2022/05/25/java/springFramework/transaction/transaction/","title":"spring framework transaction"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>spring framework transaction | Hank Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hank Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">热爱生活,拥抱开源,乐于分享</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">20</span></a></li><li class="menu-item menu-item-others"><a href="/others/" rel="section"><i class="fa fa-users fa-fw"></i>推荐</a></li><li class="menu-item menu-item-read"><a href="/read/" rel="section"><i class="fa fa-book fa-fw"></i>阅读</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">事务的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1"><span class="nav-number">1.1.</span> <span class="nav-text">数据库事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B1%82%E9%9D%A2%E7%9A%84%E9%94%81"><span class="nav-number">1.1.1.</span> <span class="nav-text">数据库层面的锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82%E9%9D%A2%E7%9A%84%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81%E5%A4%84%E7%90%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">应用层面的乐观锁和悲观锁处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B9%90%E8%A7%82%E9%94%81%EF%BC%8C%E5%85%B6%E5%AE%9E%E6%B2%A1%E6%9C%89%E5%8A%A0%E9%94%81"><span class="nav-number">1.1.2.0.1.</span> <span class="nav-text">乐观锁，其实没有加锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%82%B2%E8%A7%82%E9%94%81"><span class="nav-number">1.1.2.0.2.</span> <span class="nav-text">悲观锁</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">事务的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-%E6%94%AF%E6%8C%81%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E7%9A%84%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">Spring 支持两种方式的事务管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E4%BA%8B%E5%8A%A1-%E5%8D%B3%E7%B1%BB%E4%BC%BC%E4%BA%8EJDBC%E7%BC%96%E7%A8%8B%E5%AE%9E%E7%8E%B0%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">编程事务-即类似于JDBC编程实现事务管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1-%E6%B3%A8%E8%A7%A3%E6%88%96xml-%E9%85%8D%E7%BD%AE%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.2.</span> <span class="nav-text">声明式事务 注解或xml 配置的方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E5%B1%9E%E6%80%A7"><span class="nav-number">1.3.3.</span> <span class="nav-text">事务属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96AOP%E9%80%9A%E7%9F%A5%E5%8D%8F%E4%BD%9C"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">与其他AOP通知协作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">事务隔离级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E8%A1%8C%E4%B8%BA"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">事务传播行为</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hank Bai"
+      src="/images/rocket.png">
+  <p class="site-author-name" itemprop="name">Hank Bai</p>
+  <div class="site-description" itemprop="description">全栈工程师</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="/1410199713@qq.com" title="E-Mail → 1410199713@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/BAI-HANK" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BAI-HANK" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.alloyteam.com/nav/" title="http:&#x2F;&#x2F;www.alloyteam.com&#x2F;nav&#x2F;" rel="noopener" target="_blank">Web前端导航</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+
+      <div id="music163player" >
+         <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=5236281&auto=0&height=32">
+         </iframe>
+      </div><div>
+  <br>
+  <canvas id="canvasDiyBlock" style="width:60%;">当前浏览器不支持canvas，请更换浏览器后再试</canvas><script src="/js/custom/clock.js"></script>
+</div>
+      
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/BAI-HANK" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://bh.com/2022/05/25/java/springFramework/transaction/transaction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/rocket.png">
+      <meta itemprop="name" content="Hank Bai">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hank Blog">
+      <meta itemprop="description" content="全栈工程师">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="spring framework transaction | Hank Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          spring framework transaction
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-25 10:25:37" itemprop="dateCreated datePublished" datetime="2022-05-25T10:25:37+08:00">2022-05-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-16 11:55:43" itemprop="dateModified" datetime="2022-12-16T11:55:43+08:00">2022-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="事务的概念"><a href="#事务的概念" class="headerlink" title="事务的概念"></a>事务的概念</h1><p>事务就是一组逻辑操作的组合，它们执行的结果要么全部成功，要么全部失败。</p>
+<p>事务有4个特性：</p>
+<ul>
+<li>原子性：一个事务就是一个不可再分解的单位，事务中的操作要么全部做，要么全部不做（事务中的任务要么全部提交要么全部回滚，不可能出现一部分提<br>交一部分回滚。例如：用户 A 给用户 B 转账 100 元，A 账户减100，那么 B 账户一定加 100）</li>
+<li>一致性：事务执行后，所有的数据都应该保持一致状态。(还是以用户 A 给用户 B 转账 100 元为例，转账后 A 和 B 账户的总额和转账前是一致的)</li>
+<li>隔离性：多个数据库操作并发执行时，一个请求的事务操作不能被其它操作干扰，多个并发事务执行之间要相互隔离。隔离性强调的是并发的隔离，一个事<br>务所做的操作，在最终提交前，对其他事务是不可见的，保证事务与事务之间不会冲突</li>
+<li>持久性：事务执行完成后，它对数据的影响是永久性的。持久性强调的是操作的结果,只要事务提交，数据就不会丢失，即使系统崩溃，事务也已经完成</li>
+</ul>
+<h2 id="数据库事务"><a href="#数据库事务" class="headerlink" title="数据库事务"></a>数据库事务</h2><p>针对数据库的并发操作，可能会出现一些事务的并发问题。事务并发操作中会出现三种问题：</p>
+<ul>
+<li>丢失更新：两个事务同时更新一行数据，最后一个事务的更新会覆盖掉第一个事务的更新，从而导致第一个事务更新的数据丢失，这是由于没有加锁造成的</li>
+<li>脏读：一个事务A 看到了另一个事务B 没有提交的数据</li>
+<li>不可重复读：一个事务读到了另一个事务已提交的修改的数据，对同一行数据查询两次，结果不一致</li>
+<li>幻读：一个事务读到了另一个事务已提交新增的数据,对同一张表查询两次，出现新增的行，导致结果不一致，出现了幻觉</li>
+</ul>
+<p>针对上述三个问题，由此引出了数据库事务的隔离级别来解决,也就是事务4个特性里的隔离性：</p>
+<ul>
+<li>read uncommitted 读未提交,所有事务都可以看到其他未提交事务的执行结果 —— 不解决任何问题</li>
+<li>read committed 读已提交,一个事务只能看见已经提交事务所做的改变 —— 解决丢失更新,脏读</li>
+<li>repeatable read 可重复读,从当前事务开始读取的数据到事务结束的这段时间，数据内容不受其他事务的影响 —— 解决丢失更新,脏读、不可重复读</li>
+<li>serializable 可串行化,它通过强制事务排序执行(加锁)，使之不可能相互冲突 —— 解决丢失更新,脏读、不可重复读、幻读,但可能导致大量的超时<br>现象和锁竞争.</li>
+</ul>
+<p>四种隔离级别，自上而下级别逐级增高，但并发性能逐级降低：</p>
+<ul>
+<li>MySQL 中默认的事务隔离级别是 repeatable read </li>
+<li>Oracle 、PostgresSQL 的默认事务隔离级别是 read committed </li>
+</ul>
+<p>隔离级别越高，数据库事务并发执行性能越差，能处理的操作越少。因此在实际项目开发中为了考虑并发性能一般使用提交读隔离级别，它能避免丢失更新和脏读，尽管不可重复读和幻读不能避免，但可以在可能出现的场合使用应用层面的悲观锁或乐观锁来解决这些问题。</p>
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th align="center">丢失更新</th>
+<th align="center">脏读（Dirty Read)</th>
+<th align="center">不可重复读（NonRepeatable Read）</th>
+<th align="center">幻读（Phantom Read）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>未提交读（Read uncommitted）</td>
+<td align="center">可能</td>
+<td align="center">可能</td>
+<td align="center">可能</td>
+<td align="center">可能</td>
+</tr>
+<tr>
+<td>已提交读（Read committed）</td>
+<td align="center">不可能</td>
+<td align="center">不可能</td>
+<td align="center">可能</td>
+<td align="center">可能</td>
+</tr>
+<tr>
+<td>可重复读（Repeatable read）</td>
+<td align="center">不可能</td>
+<td align="center">不可能</td>
+<td align="center">不可能</td>
+<td align="center">可能</td>
+</tr>
+<tr>
+<td>可串行化（Serializable ）</td>
+<td align="center">不可能</td>
+<td align="center">不可能</td>
+<td align="center">不可能</td>
+<td align="center">不可能</td>
+</tr>
+</tbody></table>
+<p>MySQL数据库是如何做到事务的原子性的呢</p>
+<blockquote>
+<p>我们知道如果想要保证事务的原子性，就需要在异常发生时，对已经执行的操作进行回滚，在 MySQL 中，恢复机制是通过 回滚日志（undo log） 实现的，所有事务进行的修改都会先&gt;先记录到这个回滚日志中，然后再执行相关的操作。如果执行过程中遇到异常的话，我们直接利用 回滚日志 中的信息将数据回滚到修改之前的样子即可！并且，回滚日志会先于数据持&gt;久化到磁盘上。这样就保证了即使遇到数据库突然宕机等情况，当用户再次启动数据库的时候，数据库还能够通过查询回滚日志来回滚将之前未完成的事务。</p>
+</blockquote>
+<h3 id="数据库层面的锁"><a href="#数据库层面的锁" class="headerlink" title="数据库层面的锁"></a>数据库层面的锁</h3><p>锁用来对数据进行锁定，我们可以从锁定对象的粒度大小来对锁进行划分，分别为行锁、页锁和表锁。</p>
+<ul>
+<li>行级锁是数据库中锁定粒度最细的一种锁，表示只针对当前操作的行进行加锁。行级锁能大大减少数据库操作的冲突。其加锁粒度最小，但加锁的开销也最大。特点：开销大，加锁<br>慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低，并发度也最高。</li>
+<li>表级锁是数据库中锁定粒度最大的一种锁，表示对当前操作的整张表加锁，它实现简单，资源消耗较少。特点：开销小，加锁快；不会出现死锁；锁定粒度大，发出锁冲突的概率最<br>高，并发度最低。</li>
+<li>页级锁是数据库中锁定粒度介于行级锁和表级锁中间的一种锁。表级锁速度快，但冲突多，行级冲突少，但速度慢。所以取了折衷的页级，一次锁定相邻的一组记录。特点：开销和加<br>锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般,时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般</li>
+</ul>
+<p>不同数据库支持的锁力度不同，甚至同一种数据库不同的引擎支持的锁力度都不同，如下表所示</p>
+<h3 id="应用层面的乐观锁和悲观锁处理"><a href="#应用层面的乐观锁和悲观锁处理" class="headerlink" title="应用层面的乐观锁和悲观锁处理"></a>应用层面的乐观锁和悲观锁处理</h3><blockquote>
+<p>无论是乐观锁和悲观锁，并非是数据库自身持有的锁类型（虽然悲观锁形式上很像独占锁），而是程序设计的一种思想，是一种类似数据库锁机制保护数据一致性的策略。</p>
+</blockquote>
+<p>程序编写过程中，操作数据无论采用哪个类型的锁，都需要注意死锁的发生，一个死锁有可能对整个应用是致命的。死锁的本质是对资源竞争的一种失败表现，所以sql语句的编写过程中对于多表的操作最好采用一致的顺序来进行，或者尽量减少多表操作</p>
+<h5 id="乐观锁，其实没有加锁"><a href="#乐观锁，其实没有加锁" class="headerlink" title="乐观锁，其实没有加锁"></a>乐观锁，其实没有加锁</h5><p>认为一般情况下数据不会造成冲突，所以在数据进行提交更新时才会对数据的冲突与否进行检测。如果没有冲突那就OK；如果出现冲突了，则返回错误信息并让用户决定如何去做.<br>乐观锁是一种程序的设计思想，通过一个标识的对比来决定数据是否可以操作，现在普遍的做法是给数据加一个版本号或者时间戳的方式来实现乐观锁.</p>
+<p>操作过程：在表中设计一个版本字段 version，第一次读的时候，会获取 version 字段的取值。然后对数据进行更新或删除操作时，会执行UPDATE … SET version=version+1 WHERE version=version。此时如果已经有事务对这条数据进行了更改，修改就不会成功</p>
+<p>乐观锁比较适合读取操作比较频繁的场景，如果出现大量的写入操作，数据发生冲突的可能性就会增大，为了保证数据的一致性，应用层需要不断的重新获取数据，这样会增加大量的查询操作，降低了系统的吞吐量。</p>
+<h5 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h5><p>每次获取数据的时候，都会担心数据被修改，所以每次获取数据的时候都会进行加锁，确保在自己使用的过程中数据不会被别人修改，使用完成后进行数据解锁。由于数据进行加锁，期间对该数据进行读写的其他线程都会进行等待</p>
+<p>操作过程：在代码里对修改数据的代码进行加锁，synchronized</p>
+<p>悲观锁比较适合写入操作比较频繁的场景，如果出现大量的读取操作，每次读取的时候都会进行加锁，这样会增加大量的锁的开销，降低了系统的吞吐量。</p>
+<h2 id="事务的类型"><a href="#事务的类型" class="headerlink" title="事务的类型"></a>事务的类型</h2><p>数据库事务类型有本地事务和分布式事务：</p>
+<ul>
+<li>本地事务：就是普通事务，能保证单台数据库上的操作的ACID，被限定在一台数据库上</li>
+<li>分布式事务：涉及两个或多个数据库源的事务，即跨越多台同类或异类数据库的事务（由每台数据库的本地事务组成的），分布式事务旨在保证这些本地事务的所有操作的ACID，使事务可以跨越多台数据库</li>
+</ul>
+<p>Java事务类型有JDBC事务和JTA事务：</p>
+<ul>
+<li>JDBC事务：就是数据库事务类型中的本地事务，通过Connection对象的控制来管理事务</li>
+<li>JTA事务：JTA指Java事务API(Java Transaction API)，是Java EE数据库事务规范， JTA只提供了事务管理接口，由应用程序服务器厂（WebSphere Application Server）提供实现，JTA事务比JDBC更强大，支持分布式事务</li>
+</ul>
+<p>Java EE事务类型有本地事务和全局事务：</p>
+<ul>
+<li>本地事务：使用JDBC编程实现事务</li>
+<li>全局事务：由应用程序服务器提供，使用JTA事务</li>
+</ul>
+<p>按是否通过编程实现事务有声明式事务和编程式事务：</p>
+<ul>
+<li>声明式事务： 通过注解或XML配置文件指定事务信息</li>
+<li>编程式事务：通过编写代码实现事务。</li>
+</ul>
+<h2 id="Spring-支持两种方式的事务管理"><a href="#Spring-支持两种方式的事务管理" class="headerlink" title="Spring 支持两种方式的事务管理"></a>Spring 支持两种方式的事务管理</h2><p>Spring框架最核心功能之一就是事务管理，而且提供一致的事务管理抽象，这能帮助我们：<br>*提供一致的编程式事务管理API，不管使用Spring JDBC框架还是集成第三方框架使用该API进行事务编程；<br>*无侵入式的声明式事务支持。</p>
+<p>Spring支持声明式事务和编程式事务事务类型。<br><em>Spring 关于事务的接口定义在这个包里</em></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>--&gt;</span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-tx<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3.22<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Spring 框架中，事务管理相关最重要的 3 个接口如下：</p>
+<ul>
+<li>PlatformTransactionManager：（平台）事务管理器，Spring 事务策略的核心。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">PlatformTransactionManager</span> <span class="keyword">extends</span> <span class="title class_">TransactionManager</span> &#123;</span><br><span class="line">  <span class="comment">//返回一个已经激活的事务或创建一个新的事务</span></span><br><span class="line">  TransactionStatus <span class="title function_">getTransaction</span><span class="params">(<span class="meta">@Nullable</span> TransactionDefinition definition)</span> <span class="keyword">throws</span> TransactionException;</span><br><span class="line">  <span class="comment">//提交</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">commit</span><span class="params">(TransactionStatus status)</span> <span class="keyword">throws</span> TransactionException;</span><br><span class="line">  <span class="comment">//回滚</span></span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">rollback</span><span class="params">(TransactionStatus status)</span> <span class="keyword">throws</span> TransactionException;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>TransactionDefinition： 事务定义信息(事务隔离级别、传播行为、超时、只读、回滚规则)。 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">TransactionDefinition</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//获取事务的传播性</span></span><br><span class="line">  <span class="keyword">default</span> <span class="type">int</span> <span class="title function_">getPropagationBehavior</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//获取事务的隔离级别</span></span><br><span class="line">  <span class="keyword">default</span> <span class="type">int</span> <span class="title function_">getIsolationLevel</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//获取事务的超时时间</span></span><br><span class="line">  <span class="keyword">default</span> <span class="type">int</span> <span class="title function_">getTimeout</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//获取事务是否只读</span></span><br><span class="line">  <span class="keyword">default</span> <span class="type">boolean</span> <span class="title function_">isReadOnly</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//获取事务的名称</span></span><br><span class="line">  <span class="meta">@Nullable</span></span><br><span class="line">  <span class="keyword">default</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> TransactionDefinition <span class="title function_">withDefaults</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> StaticTransactionDefinition.INSTANCE;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>TransactionStatus： 事务运行状态 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">TransactionStatus</span> <span class="keyword">extends</span> <span class="title class_">TransactionExecution</span>, SavepointManager, Flushable &#123;</span><br><span class="line">   <span class="comment">//获取是否存在保存点</span></span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">hasSavepoint</span><span class="params">()</span>;</span><br><span class="line">   <span class="comment">//用于刷新底层会话中的修改到数据库，一般用于刷新如Hibernate/JPA的会话，可能对如JDBC类型的事务无任何影响；</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">flush</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">TransactionExecution</span> &#123;</span><br><span class="line">   <span class="comment">//获取是否是新事务</span></span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">isNewTransaction</span><span class="params">()</span>;</span><br><span class="line">   <span class="comment">//设置事务回滚</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">setRollbackOnly</span><span class="params">()</span>;</span><br><span class="line">   <span class="comment">//获取事务是否回滚</span></span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">isRollbackOnly</span><span class="params">()</span>;</span><br><span class="line">   <span class="comment">//获取事务是否完成</span></span><br><span class="line">   <span class="type">boolean</span> <span class="title function_">isCompleted</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>我们可以把 PlatformTransactionManager 接口可以被看作是事务上层的管理者，而 TransactionDefinition 和 TransactionStatus 这两个接口可以看作是事务的描述。&gt;PlatformTransactionManager 会根据 TransactionDefinition 的定义比如事务超时时间、隔离级别、传播行为等来进行事务管理 ，而 TransactionStatus 接口则提供了<br>一些方法来获取事务相应的状态比如是否新事务、是否可以回滚等等。</p>
+</blockquote>
+<p>PlatformTransactionManager：<br>通过这个接口，Spring 为各个平台如 JDBC(DataSourceTransactionManager)、Hibernate(HibernateTransactionManager)、JPA(JpaTransactionManager) JtaTransactionManager（分布式事务管理的支持，并将事务管理委托给Java EE应用服务器事务管理器）等都提供了对应的事务管理器</p>
+<p>DataSourceTransactionManager 或 JdbcTransactionManager 用于Spring JDBC抽象框架、iBATIS或MyBatis框架的事务管理 的实现在如下 jar 包里</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3.23<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p><font color=blue>JdbcTransactionManager 类继承关系</font><br>TransactionManager 它是 SpringFramework 5.2 才新加的接口，由于响应式 jdbc 在 SpringFramework 中引入，在 SpringFramework 5.2 之后引入了响应式事务，由此产生了新的根接口</p>
+<pre class="mermaid">classDiagram
+    I_TransactionManager <|--   I_PlatformTransactionManager
+    I_PlatformTransactionManager <|-- I_ResourceTransactionManager
+    I_PlatformTransactionManager <|..  C_AbstractPlatformTransactionManager
+    C_AbstractPlatformTransactionManager <|--  C_DataSourceTransactionManager
+    I_Serializable    <|..  C_AbstractPlatformTransactionManager
+    I_InitializingBean <|..  C_ DataSourceTransactionManager
+    I_ResourceTransactionManager <|.. C_DataSourceTransactionManager
+    C_ DataSourceTransactionManager --|> C_JdbcTransactionManager</pre>
+
+<p><font color=blue>演示准备的例子</font><br>postgresql 数据库测试需要引入的包</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- spring 对 jdbc 的封装  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3.23<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- postgres 数据库驱动 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.postgresql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>postgresql<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>42.3.7<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- spring-jdbc 需要的连接池 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.zaxxer<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>HikariCP<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- org.slf4j 做日志记录 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.30<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Order(1)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ConfigerDB</span> &#123;</span><br><span class="line">  <span class="comment">//spring  jdbc</span></span><br><span class="line">  <span class="meta">@Bean(&quot;jdbcTemplate&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> JdbcTemplate <span class="title function_">getJdbcTemplate</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">var</span> jdbcTemplate=  <span class="keyword">new</span> <span class="title class_">JdbcTemplate</span>();</span><br><span class="line">      jdbcTemplate.setDataSource(getDataSource());</span><br><span class="line">      <span class="keyword">return</span> jdbcTemplate;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//配置数据源</span></span><br><span class="line">  <span class="meta">@Bean(&quot;hikariDataSource&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> HikariDataSource <span class="title function_">getDataSource</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="type">var</span> <span class="variable">dataSource</span> <span class="operator">=</span> DataSourceBuilder.create();</span><br><span class="line">    dataSource.url(<span class="string">&quot;jdbc:postgresql://localhost:5432/postgres&quot;</span>);</span><br><span class="line">    dataSource.driverClassName(<span class="string">&quot;org.postgresql.Driver&quot;</span>);</span><br><span class="line">    dataSource.username(<span class="string">&quot;postgres&quot;</span>);</span><br><span class="line">    dataSource.password(<span class="string">&quot;admin@123&quot;</span>);</span><br><span class="line">    <span class="comment">//连接池，演示目的不设置参数了</span></span><br><span class="line">    <span class="keyword">var</span> pool= <span class="keyword">new</span> <span class="title class_">HikariDataSource</span>( );</span><br><span class="line">    pool.setDataSource(dataSource.build());</span><br><span class="line">    <span class="keyword">return</span>  pool;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对事务执行的方法进行 AOP 日志错误记录</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyAnnotationAOPAspect</span> &#123;</span><br><span class="line">  <span class="meta">@Around(&quot;execution(* com.hank.postgres.Service*.*(..))&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">around</span><span class="params">(ProceedingJoinPoint pjp)</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      pjp.proceed();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">      System.out.println(pjp.getTarget().getClass().getName() + <span class="string">&quot;.&quot;</span> + pjp.getSignature().getName() + <span class="string">&quot;,执行错误，错误信息是&quot;</span> + e.getMessage());</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="编程事务-即类似于JDBC编程实现事务管理"><a href="#编程事务-即类似于JDBC编程实现事务管理" class="headerlink" title="编程事务-即类似于JDBC编程实现事务管理"></a>编程事务-即类似于JDBC编程实现事务管理</h3><p>主要依赖的实现：</p>
+<ul>
+<li>JdbcTransactionManager  事务管理器</li>
+<li>TransactionTemplate 事务模板,使用它可以完成编程式事务</li>
+</ul>
+<p>TransactionTemplate 事务模板</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Order(2)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ConfigerTransantion</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> HikariDataSource hikariDataSource;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">ConfigerTransantion</span><span class="params">(HikariDataSource hikariDataSource)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.hikariDataSource=hikariDataSource;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Bean(&quot;transactionTemplate&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> TransactionTemplate <span class="title function_">getTransactionTemplate</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">TransactionTemplate</span>(getJdbcTransactionManager());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Bean(&quot;jdbcTransactionManager&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> JdbcTransactionManager <span class="title function_">getJdbcTransactionManager</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JdbcTransactionManager</span>(hikariDataSource);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><font color=blue>编程式事务,利用事务模板去完成 TransactionTemplate transactionTemplate</font></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Service</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> TransactionTemplate transactionTemplate;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> JdbcTemplate jdbcTemplate;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//注入</span></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Service</span><span class="params">(TransactionTemplate transactionTemplate,JdbcTemplate jdbcTemplate)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.transactionTemplate = transactionTemplate;</span><br><span class="line">    <span class="built_in">this</span>.jdbcTemplate=jdbcTemplate;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insert</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">final</span> Exception[] exception = &#123;<span class="keyword">new</span> <span class="title class_">Exception</span>()&#125;;</span><br><span class="line">     <span class="type">var</span> <span class="variable">result</span> <span class="operator">=</span> transactionTemplate.execute(p-&gt;&#123;</span><br><span class="line">         <span class="keyword">var</span> i= jdbcTemplate.update(<span class="string">&quot;insert into \&quot;order\&quot; (id, name)values (?,?)&quot;</span>,<span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="number">200</span>,<span class="string">&quot;name1&quot;</span>&#125;);</span><br><span class="line">         <span class="type">var</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">         <span class="comment">//回滚点</span></span><br><span class="line">         <span class="keyword">var</span> savePoint= p.createSavepoint();</span><br><span class="line">         <span class="keyword">try</span> &#123;</span><br><span class="line">           j=jdbcTemplate.update(<span class="string">&quot;insert into \&quot;order\&quot; (id, name)values (?,?)&quot;</span>,<span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="number">201</span>,<span class="string">&quot;name2&quot;</span>&#125;);</span><br><span class="line">           <span class="type">var</span> <span class="variable">bar</span> <span class="operator">=</span><span class="number">1</span>/<span class="number">0</span>;</span><br><span class="line">         &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">           j=<span class="number">0</span>;</span><br><span class="line">           <span class="comment">//回滚代码到 savePoint 对象定义执行的代码，</span></span><br><span class="line">           p.rollbackToSavepoint(savePoint);</span><br><span class="line">           <span class="comment">//rollbackToSavepoint 意思是无论有无错误,都只执行回调点前的代码</span></span><br><span class="line">           <span class="comment">//不能 throw e ,这样回滚效果就会失效</span></span><br><span class="line">           exception[<span class="number">0</span>] =e;</span><br><span class="line">         &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">           p.releaseSavepoint(savePoint);</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">return</span> i+j;</span><br><span class="line">      &#125;);</span><br><span class="line">      System.out.println(<span class="string">&quot;更新成功次数:&quot;</span>+result);</span><br><span class="line">      <span class="keyword">if</span>(exception.length==<span class="number">1</span>) <span class="keyword">throw</span> exception[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//测试</span></span><br><span class="line"><span class="meta">@ComponentScan(&#123;&quot;com.hank&quot;&#125;)</span></span><br><span class="line"><span class="meta">@EnableAspectJAutoProxy(exposeProxy = true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Programmer</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(Programmer.class);</span><br><span class="line">    <span class="type">var</span> <span class="variable">bean</span> <span class="operator">=</span>context.getBean(Service.class);</span><br><span class="line">    bean.insert();</span><br><span class="line">    context.close();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="声明式事务-注解或xml-配置的方式"><a href="#声明式事务-注解或xml-配置的方式" class="headerlink" title="声明式事务 注解或xml 配置的方式"></a>声明式事务 注解或xml 配置的方式</h3><p>主要依赖的实现：</p>
+<ul>
+<li> @Transactional(“jdbcTransactionManager”) 一句注解,注解的参数是事务管理器的 beanName</li>
+<li> @EnableTransactionManagement 使能 @EnableTransactionManagement</li>
+</ul>
+<p>注解的实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明式事务 需要有事务管理器，事务模板内部代码自己生成</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Order(2)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ConfigerTransantion</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> HikariDataSource hikariDataSource;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">ConfigerTransantion</span><span class="params">(HikariDataSource hikariDataSource)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.hikariDataSource=hikariDataSource;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Bean(&quot;jdbcTransactionManager&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> JdbcTransactionManager <span class="title function_">getJdbcTransactionManager</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">JdbcTransactionManager</span>(hikariDataSource);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Service1</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> JdbcTemplate jdbcTemplate;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//注入</span></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Service1</span><span class="params">(JdbcTemplate jdbcTemplate)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.jdbcTemplate = jdbcTemplate;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//注解声明式事务</span></span><br><span class="line">  <span class="meta">@Transactional(&quot;jdbcTransactionManager&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insert</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">i</span> <span class="operator">=</span> jdbcTemplate.update(<span class="string">&quot;insert into \&quot;order\&quot; (id, name)values (?,?)&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="number">200</span>, <span class="string">&quot;name1&quot;</span>&#125;);</span><br><span class="line">    <span class="type">var</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">var</span> <span class="variable">savePoint</span> <span class="operator">=</span> TransactionAspectSupport.currentTransactionStatus().createSavepoint();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      j = jdbcTemplate.update(<span class="string">&quot;insert into \&quot;order\&quot; (id, name)values (?,?)&quot;</span>, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;<span class="number">201</span>, <span class="string">&quot;name2&quot;</span>&#125;);</span><br><span class="line">      <span class="comment">//var bar =1/0;</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">      j = <span class="number">0</span>;</span><br><span class="line">      TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savePoint);</span><br><span class="line">      <span class="comment">//编程式事务抛出错误，回滚会失效，注解不会,因为此时的事务访问是方法，而不是编程式事务的回调内的事务范围</span></span><br><span class="line">      <span class="keyword">throw</span> e;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      TransactionAspectSupport.currentTransactionStatus().releaseSavepoint(savePoint);</span><br><span class="line">      System.out.println(<span class="string">&quot;更新成功次数:&quot;</span> + (i + j));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@ComponentScan(&#123;&quot;com.hank&quot;&#125;)</span></span><br><span class="line"><span class="meta">@EnableAspectJAutoProxy()</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Programmer</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(Programmer.class);</span><br><span class="line">    <span class="type">var</span> <span class="variable">bean</span> <span class="operator">=</span>context.getBean(Service1.class);</span><br><span class="line">    bean.insert();</span><br><span class="line">    context.close();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="事务属性"><a href="#事务属性" class="headerlink" title="事务属性"></a>事务属性</h3><p>@Transactional配置详解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE, ElementType.METHOD&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Transactional &#123;</span><br><span class="line">  <span class="meta">@AliasFor(&quot;transactionManager&quot;)</span></span><br><span class="line">  String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="comment">//指定事务管理器名字，默认为transactionManager，当使用其他名字时需要明确指定</span></span><br><span class="line">  <span class="meta">@AliasFor(&quot;value&quot;)</span></span><br><span class="line">  String <span class="title function_">transactionManager</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">   </span><br><span class="line">  String[] label() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">  <span class="comment">//指定事务传播行为，默认为Required，使用Propagation.REQUIRED指定</span></span><br><span class="line">  Propagation <span class="title function_">propagation</span><span class="params">()</span> <span class="keyword">default</span> Propagation.REQUIRED;</span><br><span class="line">  <span class="comment">//指定事务隔离级别，默认为“DEFAULT”，使用Isolation.DEFAULT指定；</span></span><br><span class="line">  Isolation <span class="title function_">isolation</span><span class="params">()</span> <span class="keyword">default</span> Isolation.DEFAULT;</span><br><span class="line">  <span class="comment">//指定事务超时时间，以秒为单位，默认-1表示事务超时将依赖于底层事务系统</span></span><br><span class="line">  <span class="type">int</span> <span class="title function_">timeout</span><span class="params">()</span> <span class="keyword">default</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  String <span class="title function_">timeoutString</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="comment">//指定事务是否只读，默认false表示事务非只读</span></span><br><span class="line">  <span class="type">boolean</span> <span class="title function_">readOnly</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">//指定一组异常类，遇到该类异常将回滚事务</span></span><br><span class="line">  Class&lt;? <span class="keyword">extends</span> <span class="title class_">Throwable</span>&gt;[] rollbackFor() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">  <span class="comment">//和 rollbackFor()功能一样</span></span><br><span class="line">  String[] rollbackForClassName() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">  <span class="comment">//指定一组异常类，即使遇到该类异常也将提交事务，即不回滚事务</span></span><br><span class="line">  Class&lt;? <span class="keyword">extends</span> <span class="title class_">Throwable</span>&gt;[] noRollbackFor() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">  <span class="comment">//和 noRollbackFor()功能一样 </span></span><br><span class="line">  String[] noRollbackForClassName() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用@Transactional注解事务管理需要特别注意以下几点:</p>
+<ol>
+<li>在Spring代理机制下(不管是JDK动态代理还是CGLIB代理)，“自我调用”同样不会应用相应的事务属性</li>
+<li>默认只对RuntimeException异常回滚；</li>
+<li>在使用Spring代理时，默认只有在public可见度的方法的@Transactional 注解才是有效的，其它可见度（protected、private、包可见）的方法上即使有@Transactional 注解也不会应用这些事务属性的，Spring也不会报错，如果你非要使用非公共方法注解事务管理的话，可考虑使用AspectJ。</li>
+</ol>
+<h4 id="与其他AOP通知协作"><a href="#与其他AOP通知协作" class="headerlink" title="与其他AOP通知协作"></a>与其他AOP通知协作</h4><p>Spring声明式事务实现其实就是Spring AOP+线程绑定实现，利用AOP实现开启和关闭事务，利用线程绑定（ThreadLocal）实现跨越多个方法实现事务传播。</p>
+<p>由于我们不可能只使用一个事务通知，可能还有其他类型事务通知，而且如果这些通知中需要事务支持怎么办？这就牵扯到通知执行顺序的问题上了，因此如果可能与其他AOP通知协作的话，而且这些通知中需要使用声明式事务管理支持，事务通知应该具有最高优先级。</p>
+<h4 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h4><p>用来解决并发事务时出现的问题，其使用TransactionDefinition中的静态变量来指定：</p>
+<ul>
+<li>ISOLATION_DEFAULT：默认隔离级别，即使用底层数据库默认的隔离级别；</li>
+<li>ISOLATION_READ_UNCOMMITTED：未提交读；</li>
+<li>ISOLATION_READ_COMMITTED：提交读，一般情况下我们使用这个；</li>
+<li>ISOLATION_REPEATABLE_READ：可重复读；</li>
+<li>ISOLATION_SERIALIZABLE：序列化</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(transactionManager=&quot;jdbcTransactionManager&quot;,isolation = Isolation.READ_COMMITTED)</span></span><br></pre></td></tr></table></figure>
+<h4 id="事务传播行为"><a href="#事务传播行为" class="headerlink" title="事务传播行为"></a>事务传播行为</h4><p>事务的传播指的的是如下代码 f1 方法支持事务，在f1方法内部调用另一个事务方法f2,此时是吧 f1 和 f2 这俩个方法的事务合并成一个事务。还是分开呢，如果分开： </p>
+<ul>
+<li>f2 执行失败 要不要影响到 f1 </li>
+<li>反过来 f1 失败了还要不要执行 f2</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Bar</span>&#123;</span><br><span class="line">   <span class="meta">@Transactional(&quot;jdbcTransactionManager&quot;)</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">f1</span><span class="params">()</span>&#123; f2()&#125;</span><br><span class="line">   <span class="meta">@Transactional(&quot;jdbcTransactionManager&quot;)</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">f2</span><span class="params">()</span>&#123;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>事务传播行为的7种策略:</p>
+<p>事务的默认名称和方法名一样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">OutService</span> &#123;</span><br><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  InnerService innerService;</span><br><span class="line">  <span class="comment">// 外层事务 do</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doo</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">//事务1 do1</span></span><br><span class="line">    innerService.do1(</span><br><span class="line">      <span class="comment">//TransactionSynchronizationManager.getCurrentTransactionName() 可以获取当前的事务名称</span></span><br><span class="line">      System.out.println(TransactionSynchronizationManager.getCurrentTransactionName());</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//事务2 do2</span></span><br><span class="line">    innerService.do2();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>REQUIRED： spring 事务的 <em>默认值</em> ，支持当前事务，如果不存在，就创建一个<br>do1 ,do2 都是 REQUIRED,举例：</p>
+<ul>
+<li>如果当前 doo 事务不存在，则会开启俩个新的事务 do1 和 do2 ,do1 和 do2 互相不影响,do1 或 do2 出现异常不会影响到 doo</li>
+<li>如果当前 doo 事务存在，则方法会运行在当前事务 doo 中，其中任何一个有异常, doo, do1 ,do2 方法会一起回滚</li>
+</ul>
+</li>
+<li><p>REQUIRES_NEW ：如果有事务存在，挂起当前事务，创建一个新的事务。<br>do1 ,do2 是 REQUIRES_NEW,举例：</p>
+<ul>
+<li>如果当前 doo 事务不存在,开启俩个新的事务 do1 和 do2 ,do1 和 do2 互相不影响</li>
+<li>如果当前 doo 事务存在，挂起当前的事务 doo,并开启俩个新的事务 do1 和 do2 ,doo, do1 和 do2 事务互相不影响,</li>
+</ul>
+</li>
+<li><p>SUPPORTS ：如果当前有事务运行，则方法会运行在当前事务中；如果当前没有事务运行，则不会创建新的事务（即不运行在事务中）</p>
+</li>
+<li><p>NOT_SUPPORTED ：不支持事务，如果当前有事务运行，则会将该事务挂起（暂停）；如果当前没有事务运行，则它也不会运行在事务中</p>
+</li>
+<li><p>MANDATORY ：如果没有事务，则直接抛出异常</p>
+</li>
+<li><p>NEVER ：当前方法不允许运行在事务中，如果当前已经有事务运行，则抛出异常</p>
+</li>
+<li><p>NESTED ：嵌套<br> 这个 NESTED 是最特殊的，它就是基于保存点 SavePoint 的传播行为。它的定义是：如果当前没有事务运行，则开启一个新的事务；如果当前已经有事务运行，则会记录一个保存点，并继续运行在当前事务中。如果子事务运行中出现异常，则不会全部回滚，而是回滚到上一个保存点。可以发现，由于在 NESTED 的执行需要依赖关系型数据库的 SavePoint 机制，所以这种传播行为只适用于 DataSourceTransactionManager （即基于数据源的事务管理器）。而且 NESTED 通常都在同一个数据源中实现，对于多数据源，或者分布式数据库的话，NESTED 是搞不定的（假设两个 Service 依赖的 Dao 分别操作不同的数据库，那实际上已经形成分布式事务了，Spring 搞不定的）</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hank Bai
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://bh.com/2022/05/25/java/springFramework/transaction/transaction/" title="spring framework transaction">http://bh.com/2022/05/25/java/springFramework/transaction/transaction/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/25/java/springBoot/springBoot/" rel="prev" title="spring boot">
+                  <i class="fa fa-chevron-left"></i> spring boot
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/25/java/springFramework/ioc/ioc/" rel="next" title="spring framework ioc">
+                  spring framework ioc <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hank Bai</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">98k</span>
+  </span>
+</div>
+
+
+  <script src='https://unpkg.com/mermaid@9.2.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"version":"9.2.2","theme":{"light":"default","dark":"dark","options":{"maxTextSize":99999}},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.2.2/mermaid.min.js","integrity":"sha256-CemUs9ITT7liCZpVMktcEw0BpAOZ1+mujlMB3UyuImU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.7.2/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"BAI-HANK","repo":"bai-hank.github.io","client_id":"ee40f9d8aaf703fdb6ed","client_secret":"64cd53b08de038c5276753612c35ace517544597","admin_user":"BAI-HANK","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.7.2/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"978fc9e2d6459801e4c9d4f884ac3b57"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7}});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/custom/clickLove.js"></script>
+
